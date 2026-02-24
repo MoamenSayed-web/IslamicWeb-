@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ركن الأطفال - سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Playful Kids Section Styles */
+      body {
+        background-color: #f0fdf4; /* soft green/mint background */
+      }
+      [data-theme="dark"] body {
+        background-color: var(--bg-main);
+      }
+
+      .page-hero h1 {
+        font-family: var(--font-cairo);
+        font-size: 3.5rem;
+        font-weight: 800;
+        text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+        margin-bottom: 10px;
+      }
+
+      .page-hero p {
+        font-size: 1.5rem;
+        font-family: var(--font-tajawal);
+        text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .kids-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: -30px;
+        padding: 0 20px;
+        position: relative;
+        z-index: 5;
+      }
+
+      .kid-card {
+        background: white;
+        border-radius: 30px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border: 4px solid transparent;
+        transition:
+          transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.3s;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+
+      [data-theme="dark"] .kid-card {
+        background: var(--bg-secondary);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      }
+
+      .kid-card:hover {
+        transform: translateY(-10px) scale(1.02);
+      }
+
+      .kid-card.blue:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2);
+      }
+      .kid-card.green:hover {
+        border-color: #10b981;
+        box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2);
+      }
+      .kid-card.yellow:hover {
+        border-color: #f59e0b;
+        box-shadow: 0 15px 35px rgba(245, 158, 11, 0.2);
+      }
+      .kid-card.purple:hover {
+        border-color: #8b5cf6;
+        box-shadow: 0 15px 35px rgba(139, 92, 246, 0.2);
+      }
+
+      .kid-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.5rem;
+        color: white;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .kid-card.blue .kid-icon {
+        background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      }
+      .kid-card.green .kid-icon {
+        background: linear-gradient(135deg, #34d399, #10b981);
+      }
+      .kid-card.yellow .kid-icon {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      }
+      .kid-card.purple .kid-icon {
+        background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+      }
+
+      .kid-card h3 {
+        font-family: var(--font-cairo);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--text-main);
+      }
+
+      .kid-card p {
+        color: var(--text-muted);
+        font-family: var(--font-tajawal);
+        font-size: 1.1rem;
+      }
+
+      /* Sections Content Wrappers */
+      .kids-section-content {
+        display: none;
+        padding: 50px 0;
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .kids-section-content.active {
+        display: block;
+      }
+
+      .section-header-kids {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .section-header-kids h2 {
+        font-family: var(--font-cairo);
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        display: inline-block;
+        position: relative;
+      }
+
+      .section-header-kids h2::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 5px;
+        border-radius: 5px;
+        background-color: var(--accent-gold);
+      }
+
+      /* Quiz Styles */
+      .quiz-container {
+        background: white;
+        border-radius: 30px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        max-width: 700px;
+        margin: 0 auto;
+        border: 2px dashed #a78bfa;
+      }
+
+      [data-theme="dark"] .quiz-container {
+        background: var(--bg-secondary);
+        border-color: #8b5cf6;
+      }
+
+      .question-text {
+        font-size: 1.5rem;
+        font-family: var(--font-cairo);
+        color: var(--text-main);
+        margin-bottom: 25px;
+        text-align: center;
+      }
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .option-btn {
+        background: var(--bg-main);
+        border: 2px solid var(--border-color);
+        padding: 15px 20px;
+        border-radius: 15px;
+        font-size: 1.2rem;
+        font-family: var(--font-tajawal);
+        color: var(--text-main);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .option-btn:hover {
+        background: #f3f4f6;
+        border-color: #8b5cf6;
+        transform: scale(1.02);
+      }
+
+      [data-theme="dark"] .option-btn:hover {
+        background: #374151;
+      }
+
+      .option-btn.correct {
+        background: #10b981;
+        color: white;
+        border-color: #10b981;
+      }
+
+      .option-btn.wrong {
+        background: #ef4444;
+        color: white;
+        border-color: #ef4444;
+      }
+
+      .quiz-score {
+        text-align: center;
+        font-size: 1.5rem;
+        font-family: var(--font-cairo);
+        color: var(--primary-color);
+        margin-top: 20px;
+        display: none;
+      }
+
+      .quiz-score i {
+        color: var(--accent-gold);
+        font-size: 2rem;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      /* Cards Grid inside sections */
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .info-card {
+        background: var(--bg-secondary);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--border-color);
+        transition: transform 0.3s;
+      }
+      .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-card h4 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        font-family: var(--font-cairo);
+      }
+
+      .info-card p {
+        color: var(--text-main);
+        font-size: 1.1rem;
+        line-height: 1.8;
+      }
+
+      .back-to-menu {
+        display: inline-block;
+        margin-top: 30px;
+        background: var(--bg-secondary);
+        color: var(--text-main);
+        border: 2px solid var(--border-color);
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+      .back-to-menu:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container nav-content">
+        <a href="index.html" class="logo">
+          <i class="fa-solid fa-moon"></i> سراج
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="quran.html">القرآن الكريم</a></li>
+          <li><a href="tafseer.html">التفسير</a></li>
+          <li><a href="hadith.html">الحديث النبوي</a></li>
+          <li><a href="azkar.html">الأذكار</a></li>
+          <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+          <li><a href="tasbeeh.html">المسبحة</a></li>
+
+          <li><a href="kids.html" class="active">ركن الأطفال</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button id="theme-toggle" aria-label="Toggle theme">
+            <i class="fa-solid fa-cloud-sun"></i>
+          </button>
+          <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="page-hero">
+      <div class="container kids-hero-content">
+        <h1 class="fade-in-up">أهلاً بك يا بطل!</h1>
+        <p class="fade-in-up delay-1">
+          هنا ركن الأطفال الممتع، لنتعلم معاً أساسيات ديننا الجميل
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Main Menu Grid -->
+      <div class="kids-grid reveal active" id="kids-main-menu">
+        <div class="kid-card blue" onclick="showSection('pillars')">
+          <div class="kid-icon">
+            <i class="fa-solid fa-mosque"></i>
+          </div>
+          <h3>أركان الإسلام</h3>
+          <p>لنتعرف على الأعمدة الخمسة لديننا الحنيف</p>
+        </div>
+
+        <div class="kid-card green" onclick="showSection('prophets')">
+          <div class="kid-icon">
+            <i class="fa-solid fa-book-quran"></i>
+          </div>
+          <h3>قصص الأنبياء</h3>
+          <p>قصص وعبر من حياة الأنبياء والرسل صلوات الله عليهم</p>
+        </div>
+
+        <div class="kid-card yellow" onclick="showSection('surahs')">
+          <div class="kid-icon">
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <h3>سور من القرآن</h3>
+          <p>تلاوة وتفسير مبسط لبعض سور جزء عمَّ</p>
+        </div>
+
+        <div class="kid-card purple" onclick="showSection('quiz')">
+          <div class="kid-icon">
+            <i class="fa-solid fa-puzzle-piece"></i>
+          </div>
+          <h3>طيور الجنة (مسابقات)</h3>
+          <p>اختبر معلوماتك الدينية في لعبة سؤال وجواب ممتعة!</p>
+        </div>
+
+        <div
+          class="kid-card"
+          onclick="showSection('basics')"
+          style="border-color: #ec4899"
+        >
+          <div
+            class="kid-icon"
+            style="background: linear-gradient(135deg, #f472b6, #ec4899)"
+          >
+            <i class="fa-solid fa-hands-bubbles"></i>
+          </div>
+          <h3 style="color: #ec4899">أساسيات الدين</h3>
+          <p>لنتعلم كيف نتوضأ ونصلي بطريقة صحيحة</p>
+        </div>
+
+        <div
+          class="kid-card"
+          style="border-color: #9ca3af; cursor: not-allowed; opacity: 0.8"
+        >
+          <div
+            class="kid-icon"
+            style="background: linear-gradient(135deg, #9ca3af, #6b7280)"
+          >
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <h3 style="color: #6b7280">تحدي الروبوت</h3>
+          <p style="color: #ef4444; font-weight: bold; font-size: 1.2rem">
+            قريباً .. انتظرونا!
+          </p>
+        </div>
+      </div>
+
+      <!-- Section: Pillars of Islam -->
+      <div class="kids-section-content" id="section-pillars">
+        <div class="section-header-kids">
+          <h2>أركان الإسلام الخمسة</h2>
+        </div>
+        <div class="content-grid">
+          <div class="info-card">
+            <h4>الشهادتان</h4>
+            <p>
+              أشهد أن لا إله إلا الله، وأشهد أن محمداً رسول الله. وهي مفتاح
+              الدخول في الإسلام.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>إقامة الصلاة</h4>
+            <p>
+              نصلي 5 صلوات كل يوم لنتحدث مع الله وندعوه، وهي الفجر، الظهر،
+              العصر، المغرب، والعشاء.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>إيتاء الزكاة</h4>
+            <p>
+              مساعدة الفقراء والمحتاجين بإعطائهم جزءاً صغيراً من المال ليفرحوا
+              ويرضى الله عنا.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>صوم رمضان</h4>
+            <p>
+              في شهر رمضان نمتنع عن الأكل والشرب من الفجر حتى أذان المغرب،
+              لنتعلم الصبر ونشعر بالفقراء.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>حج البيت</h4>
+            <p>
+              الذهاب إلى مكة المكرمة لزيارة الكعبة المشرفة مرة واحدة في العمر
+              لمن يستطيع.
+            </p>
+          </div>
+        </div>
+        <div style="text-align: center">
+          <button class="back-to-menu" onclick="showSection('main')">
+            <i class="fa-solid fa-arrow-right"></i> العودة للقائمة
+          </button>
+        </div>
+      </div>
+
+      <!-- Section: Prophets Stories -->
+      <div class="kids-section-content" id="section-prophets">
+        <div class="section-header-kids">
+          <h2>قصص الأنبياء</h2>
+        </div>
+        <div class="content-grid">
+          <div class="info-card">
+            <h4>آدم عليه السلام</h4>
+            <p>
+              أول إنسان خلقه الله بيده وعلمه الأسماء كلها، وأسكنه الجنة ثم نزل
+              إلى الأرض.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>نوح عليه السلام</h4>
+            <p>
+              بنى سفينة كبيرة بأمر الله لينجو هو والمؤمنون والحيوانات من الطوفان
+              العظيم.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>إبراهيم عليه السلام</h4>
+            <p>
+              خليل الله، الذي بنى الكعبة المشرفة مع ابنه إسماعيل، وكسر الأصنام
+              ليدعو للتوحيد.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>موسى عليه السلام</h4>
+            <p>
+              كليم الله، الذي أنقذ بني إسرائيل من فرعون بعصاه التي شق بها البحر
+              الأحمر بأمر الله.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>محمد ﷺ</h4>
+            <p>
+              خاتم الأنبياء والمرسلين، نزل عليه القرآن الكريم، ورسالته الرحمة
+              والمحبة لكل العالم.
+            </p>
+          </div>
+        </div>
+        <div style="text-align: center">
+          <button class="back-to-menu" onclick="showSection('main')">
+            <i class="fa-solid fa-arrow-right"></i> العودة للقائمة
+          </button>
+        </div>
+      </div>
+
+      <!-- Section: Surahs -->
+      <div class="kids-section-content" id="section-surahs">
+        <div class="section-header-kids">
+          <h2>سور قصيرة نحفظها</h2>
+        </div>
+        <div
+          class="content-grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))"
+        >
+          <!-- Surahs will be loaded from API -->
+        </div>
+        <div style="text-align: center">
+          <button class="back-to-menu" onclick="showSection('main')">
+            <i class="fa-solid fa-arrow-right"></i> العودة للقائمة
+          </button>
+        </div>
+      </div>
+
+      <!-- Section: Quiz -->
+      <div class="kids-section-content" id="section-quiz">
+        <div class="section-header-kids">
+          <h2>المسابقات الدينية</h2>
+        </div>
+
+        <div class="quiz-container" id="quiz-container">
+          <div class="quiz-score" id="quiz-score">
+            <i class="fa-solid fa-crown"></i>
+            أحسنت يا بطل! لقد أجبت إجابات رائعة!
+            <br />
+            <button class="back-to-menu" onclick="resetQuiz()">
+              <i class="fa-solid fa-rotate-right"></i> إلعب مرة أخرى
+            </button>
+          </div>
+
+          <div id="quiz-question-area">
+            <h3 class="question-text" id="question-title">السؤال هنا...</h3>
+            <div class="options-grid" id="options-grid">
+              <!-- Options generated by JS -->
+            </div>
+            <p
+              style="
+                text-align: center;
+                margin-top: 20px;
+                color: var(--text-muted);
+              "
+              id="q-counter"
+            >
+              سؤال 1 من 5
+            </p>
+          </div>
+        </div>
+
+        <div style="text-align: center">
+          <button class="back-to-menu" onclick="showSection('main')">
+            <i class="fa-solid fa-arrow-right"></i> العودة للقائمة
+          </button>
+        </div>
+      </div>
+
+      <!-- Section: Basics (Wudu & Prayer) -->
+      <div class="kids-section-content" id="section-basics">
+        <div class="section-header-kids">
+          <h2>أساسيات الدين</h2>
+        </div>
+        <div class="content-grid">
+          <div class="info-card" style="border: 2px solid #0ea5e9">
+            <h4 style="color: #0ea5e9">
+              <i class="fa-solid fa-droplet"></i> الوضوء
+            </h4>
+            <p>
+              الوضوء هو الطهارة والنظافة قبل الصلاة. نغسل أيدينا، نتمضمض،
+              نستنشق، نغسل وجهنا، وأيدينا إلى المرافق، نمسح برأسنا، ونغسل أرجلنا
+              إلى الكعبين ثلاث مرات.
+            </p>
+          </div>
+          <div class="info-card" style="border: 2px solid #10b981">
+            <h4 style="color: #10b981">
+              <i class="fa-solid fa-person-praying"></i> الصلاة
+            </h4>
+            <p>
+              الصلاة صلتنا بالله، نصلي بخشوع وطمأنينة. نقف مكبرين (الله أكبر)،
+              نقرأ الفاتحة، نركع، ثم نسجد لله مرتين في كل ركعة، ونسلم في
+              النهاية.
+            </p>
+          </div>
+          <div class="info-card" style="border: 2px solid #f59e0b">
+            <h4 style="color: #f59e0b">
+              <i class="fa-solid fa-bullhorn"></i> الأذان
+            </h4>
+            <p>
+              الأذان هو النداء لدخول وقت الصلاة. عندما نسمعه نردد خلف المؤذن
+              لننال الأجر. وفيه شهادة التوحيد ودعوة للفلاح والنجاح في الدنيا
+              والآخرة.
+            </p>
+          </div>
+          <div class="info-card" style="border: 2px solid #8b5cf6">
+            <h4 style="color: #8b5cf6">
+              <i class="fa-solid fa-moon"></i> الصيام
+            </h4>
+            <p>
+              نصوم في شهر رمضان المبارك بالامتناع عن الطعام والشراب من أذان
+              الفجر حتى أذان المغرب. الصيام يعلمنا الصبر ويجعلنا نشعر بالفقراء
+              والمحتاجين.
+            </p>
+          </div>
+          <div class="info-card" style="border: 2px solid #ef4444">
+            <h4 style="color: #ef4444">
+              <i class="fa-solid fa-heart"></i> أخلاق المسلم
+            </h4>
+            <p>
+              المسلم الحقيقي يحب الخير للناس، يصدق في حديثه، يبر والديه، ويحترم
+              الأكبر منه ويعطف على الأصغر. أخلاقنا الجميلة هي طريقنا إلى الجنة.
+            </p>
+          </div>
+        </div>
+        <div style="text-align: center">
+          <button class="back-to-menu" onclick="showSection('main')">
+            <i class="fa-solid fa-arrow-right"></i> العودة للقائمة
+          </button>
+        </div>
+      </div>
+
+      <!-- Section: AI Challenge -->
+      <div class="kids-section-content" id="section-aichallenge">
+        <div class="section-header-kids">
+          <h2>تحدي الروبوت الذكي 🤖</h2>
+        </div>
+
+        <div
+          class="quiz-container"
+          id="ai-container"
+          style="border-color: #ef4444"
+        >
+          <!-- Intro -->
+          <div id="ai-intro" style="text-align: center">
+            <i
+              class="fa-solid fa-robot"
+              style="font-size: 4rem; color: #ef4444; margin-bottom: 20px"
+            ></i>
+            <h3
+              style="
+                font-family: var(--font-cairo);
+                font-size: 1.8rem;
+                color: var(--text-main);
+              "
+            >
+              أهلاً بك! أنا الروبوت "ذكي". هل تستطيع هزيمتي؟
+            </h3>
+            <p
+              style="
+                margin-top: 10px;
+                font-size: 1.2rem;
+                color: var(--text-muted);
+              "
+            >
+              أجب على السؤال بشكل صحيح قبل أن أسبقك!
+            </p>
+            <button
+              class="back-to-menu"
+              onclick="startAiChallenge()"
+              style="
+                background: #ef4444;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                font-size: 1.3rem;
+                margin-top: 20px;
+              "
+            >
+              ابدأ التحدي الآن
+            </button>
+          </div>
+
+          <div id="ai-game-area" style="display: none">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                font-family: var(--font-cairo);
+                font-size: 1.5rem;
+                background: #f8fafc;
+                padding: 15px;
+                border-radius: 15px;
+              "
+            >
+              <div style="color: var(--primary-color); font-weight: bold">
+                أنت: <span id="user-score">0</span>
+              </div>
+              <div style="color: #ef4444; font-weight: bold">
+                الروبوت: <span id="ai-score">0</span>
+              </div>
+            </div>
+
+            <h3 class="question-text" id="ai-question-title">السؤال...</h3>
+            <div class="options-grid" id="ai-options-grid"></div>
+
+            <div
+              id="ai-timer-bar"
+              style="
+                width: 100%;
+                height: 10px;
+                background: #e2e8f0;
+                border-radius: 5px;
+                margin-top: 20px;
+                overflow: hidden;
+              "
+            >
+              <div
+                id="ai-timer-fill"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  background: #ef4444;
+                  transition: width linear;
+                "
+              ></div>
+            </div>
+          </div>
+
+          <div id="ai-result-area" style="display: none; text-align: center">
+            <h3
+              id="ai-winner-text"
+              style="font-size: 2rem; font-family: var(--font-cairo)"
+            ></h3>
+            <button
+              class="back-to-menu"
+              onclick="
+                document.getElementById('ai-result-area').style.display =
+                  'none';
+                document.getElementById('ai-intro').style.display = 'block';
+              "
+            >
+              لعب مرة أخرى
+            </button>
+          </div>
+        </div>
+
+        <div style="text-align: center">
+          <button class="back-to-menu" onclick="showSection('main')">
+            <i class="fa-solid fa-arrow-right"></i> العودة للقائمة
+          </button>
+        </div>
+      </div>
+    </main>
+    <br /><br />
+
+    <!-- Main JS & Kids JS -->
+    <script src="js/main.js"></script>
+    <script src="js/kids.js"></script>
+  </body>
+</html>
