@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html lang="ar" dir="rtl">
   <head>
@@ -603,3 +604,377 @@
     <script src="js/quran.js"></script>
   </body>
 </html>
+=======
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>القرآن الكريم - سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@300;400;600;700&family=Reem+Kufi:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .search-container {
+        max-width: 600px;
+        margin: 30px auto 0;
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 15px 25px;
+        border-radius: 30px;
+        border: none;
+        font-family: var(--font-tajawal);
+        font-size: 1.1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .search-container i {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 1.2rem;
+      }
+
+      /* Surah List Grid */
+      .surah-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 40px 0;
+      }
+
+      .surah-card {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 30px 30px 10px 10px;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+        border-top: 3px solid var(--accent-gold);
+      }
+
+      .surah-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-color);
+        box-shadow: var(--box-shadow);
+      }
+
+      .surah-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .surah-number {
+        width: 45px;
+        height: 45px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 5L61.6 30.2 88.5 28.5 70.3 48.7 75.8 74.8 50 63.5 24.2 74.8 29.7 48.7 11.5 28.5 38.4 30.2z' fill='none' stroke='%23044a34' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E")
+          center/contain no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+        color: var(--primary-color);
+        font-family: var(--font-cairo);
+      }
+
+      [data-theme="dark"] .surah-number {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 5L61.6 30.2 88.5 28.5 70.3 48.7 75.8 74.8 50 63.5 24.2 74.8 29.7 48.7 11.5 28.5 38.4 30.2z' fill='none' stroke='%230b7053' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E");
+        color: var(--primary-color);
+      }
+
+      .surah-details h3 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+      }
+
+      .surah-details p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+      }
+
+      .surah-name-arabic {
+        font-family: "Amiri", serif;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      /* Reading View Modal (Full Screen) */
+      .reading-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg-color);
+        z-index: 2000;
+        display: none;
+        flex-direction: column;
+        overflow-y: auto;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reading-modal.active {
+        display: flex;
+        transform: translateY(0);
+      }
+
+      .reading-header {
+        background-color: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        border-bottom: 1px solid var(--glass-border);
+        z-index: 10;
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--text-main);
+        cursor: pointer;
+      }
+
+      .reading-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      .bismillah {
+        font-family: "Amiri", serif;
+        font-size: 2.5rem;
+        color: var(--text-main);
+        margin-bottom: 40px;
+        text-align: center;
+      }
+
+      .ayahs-container {
+        font-family: "Amiri", serif;
+        font-size: 2rem;
+        line-height: 2.2;
+        color: var(--text-main);
+        text-align: justify;
+        text-justify: inter-word;
+        padding-bottom: 60px;
+      }
+
+      .ayah-text {
+        display: inline;
+      }
+
+      .ayah-number {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        height: 35px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23cba052' stroke-width='3'/%3E%3C/svg%3E")
+          center/contain no-repeat;
+        font-family: var(--font-tajawal);
+        font-size: 1.2rem;
+        color: var(--accent-gold);
+        margin: 0 8px;
+        vertical-align: middle;
+      }
+
+      .loading-spinner {
+        text-align: center;
+        padding: 50px;
+        font-size: 2rem;
+        color: var(--primary-color);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container nav-content">
+        <a href="index.html" class="logo">
+          <i class="fa-solid fa-moon"></i> سراج
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="quran.html" class="active">القرآن الكريم</a></li>
+          <li><a href="tafseer.html">التفسير</a></li>
+          <li><a href="tafseer.html" class="active">التفسير</a></li>
+
+          <li><a href="hadith.html">الحديث النبوي</a></li>
+          <li><a href="azkar.html">الأذكار</a></li>
+          <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+          <li><a href="tasbeeh.html">المسبحة</a></li>
+
+          <li><a href="kids.html">ركن الأطفال</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button id="theme-toggle" aria-label="Toggle theme">
+            <i class="fa-solid fa-cloud-sun"></i>
+          </button>
+          <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Quran Hero -->
+    <header class="page-hero">
+      <div class="container">
+        <h1 class="fade-in-up">القرآن الكريم</h1>
+        <p class="fade-in-up delay-1">
+          "إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ"
+        </p>
+        <div class="search-container fade-in-up delay-2">
+          <input
+            type="text"
+            id="search-surah"
+            class="search-input"
+            placeholder="ابحث عن سورة..."
+          />
+          <i class="fa-solid fa-search"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Surahs Section -->
+    <section class="container section-padding">
+      <div id="loading" class="loading-spinner">
+        <i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل السور...
+      </div>
+      <div class="surah-grid" id="surah-container">
+        <!-- Surahs will be injected here via JS -->
+      </div>
+    </section>
+
+    <!-- Reading Modal -->
+    <div class="reading-modal" id="reading-modal">
+      <div class="reading-header">
+        <h2
+          id="modal-surah-name"
+          style="
+            font-family: &quot;Amiri&quot;, serif;
+            color: var(--primary-color);
+          "
+        >
+          السورة
+        </h2>
+        <button class="close-modal" id="close-modal">
+          <i class="fa-solid fa-times"></i> إغلاق
+        </button>
+      </div>
+
+      <!-- Audio & Reciter Selection -->
+      <div
+        class="audio-controls"
+        style="
+          background: var(--bg-secondary);
+          padding: 15px 30px;
+          border-bottom: 1px solid var(--border-color);
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+          "
+        >
+          <label
+            for="reciter-select"
+            style="font-weight: bold; color: var(--primary-color)"
+            ><i class="fa-solid fa-microphone-lines"></i> اختر القارئ:</label
+          >
+          <select
+            id="reciter-select"
+            style="
+              padding: 10px 15px;
+              border-radius: 20px;
+              border: 1px solid var(--border-color);
+              font-family: var(--font-tajawal);
+              outline: none;
+              background: var(--bg-color);
+              color: var(--text-main);
+              font-size: 1rem;
+              cursor: pointer;
+              min-width: 200px;
+            "
+          >
+            <option value="ar.alafasy">مشاري راشد العفاسي</option>
+            <option value="ar.abdulbasitmurattal">عبد الباسط عبد الصمد</option>
+            <option value="ar.husary">محمود خليل الحصري</option>
+            <option value="ar.minshawi">محمد صديق المنشاوي</option>
+            <option value="ar.muaiqly">ماهر المعيقلي</option>
+            <option value="ar.sudais">عبد الرحمن السديس</option>
+            <option value="ar.shuraim">سعود الشريم</option>
+          </select>
+        </div>
+        <audio
+          id="quran-audio-player"
+          controls
+          style="
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            border-radius: 20px;
+          "
+        ></audio>
+      </div>
+
+      <div class="reading-container">
+        <div class="bismillah" id="bismillah">
+          بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+        </div>
+        <div class="loading-spinner" id="reading-loading" style="display: none">
+          <i class="fa-solid fa-circle-notch fa-spin"></i> جاري التحميل...
+        </div>
+        <div class="ayahs-container" id="ayahs-container">
+          <!-- Ayahs will be injected here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Main JS & Quran JS -->
+    <script src="js/main.js"></script>
+    <script src="js/quran.js"></script>
+  </body>
+</html>
+>>>>>>> 7194fd316f5879c5a1b0c0285d02ac58ee0672e1

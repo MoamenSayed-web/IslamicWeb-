@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html lang="ar" dir="rtl">
   <head>
@@ -499,3 +500,484 @@
     </script>
   </body>
 </html>
+=======
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>المسبحة الإلكترونية - سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@300;400;600;700&family=Reem+Kufi:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .tasbeeh-container {
+        max-width: 600px;
+        margin: 40px auto;
+        text-align: center;
+      }
+
+      /* The Main Counter Display */
+      .counter-display {
+        background-color: var(--bg-secondary);
+        border-radius: 30px;
+        padding: 40px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        border: 2px solid var(--border-color);
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 40px;
+      }
+
+      [data-theme="dark"] .counter-display {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .counter-display::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: linear-gradient(
+          90deg,
+          var(--accent-gold),
+          var(--primary-color)
+        );
+      }
+
+      .count-number {
+        font-size: 8rem;
+        font-family: monospace;
+        font-weight: 700;
+        color: var(--primary-color);
+        line-height: 1;
+        margin: 20px 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.1s;
+      }
+
+      .count-number.pulse {
+        transform: scale(1.05);
+      }
+
+      /* Interactive Big Button */
+      .tap-btn {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: linear-gradient(
+          145deg,
+          var(--primary-color),
+          var(--primary-dark)
+        );
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        box-shadow:
+          20px 20px 60px rgba(0, 0, 0, 0.1),
+          -20px -20px 60px rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: var(--font-cairo);
+        font-weight: 700;
+        margin: 0 auto;
+        transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      [data-theme="dark"] .tap-btn {
+        box-shadow:
+          20px 20px 60px rgba(0, 0, 0, 0.3),
+          -20px -20px 60px rgba(255, 255, 255, 0.02);
+        background: linear-gradient(
+          145deg,
+          var(--primary-dark),
+          var(--primary-color)
+        );
+      }
+
+      .tap-btn:active {
+        transform: scale(0.95);
+        box-shadow:
+          inset 10px 10px 20px rgba(0, 0, 0, 0.2),
+          inset -10px -10px 20px rgba(255, 255, 255, 0.1);
+      }
+
+      /* Controls Area */
+      .tasbeeh-controls {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 40px;
+      }
+
+      .control-btn {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        padding: 15px 25px;
+        border-radius: 20px;
+        font-family: var(--font-tajawal);
+        font-size: 1.1rem;
+        cursor: pointer;
+        color: var(--text-main);
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .control-btn:hover {
+        background-color: var(--primary-light);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .control-btn.reset:hover {
+        background-color: #fee2e2;
+        border-color: #ef4444;
+        color: #ef4444;
+      }
+
+      [data-theme="dark"] .control-btn.reset:hover {
+        background-color: rgba(239, 68, 68, 0.1);
+      }
+
+      /* Phrases Selector */
+      .phrase-selector {
+        margin-bottom: 30px;
+      }
+
+      .phrase-select {
+        width: 100%;
+        padding: 15px;
+        border-radius: 15px;
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-secondary);
+        color: var(--text-main);
+        font-family: "Amiri", serif;
+        font-size: 1.3rem;
+        text-align: center;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .phrase-select:focus {
+        border-color: var(--primary-color);
+      }
+
+      .goal-indicator {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .goal-progress {
+        width: 150px;
+        height: 8px;
+        background-color: var(--border-color);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .goal-bar {
+        height: 100%;
+        background-color: var(--accent-gold);
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container nav-content">
+        <a href="index.html" class="logo">
+          <i class="fa-solid fa-moon"></i> سراج
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="quran.html">القرآن الكريم</a></li>
+          <li><a href="tafseer.html">التفسير</a></li>
+          <li><a href="hadith.html">الحديث النبوي</a></li>
+          <li><a href="azkar.html">الأذكار</a></li>
+          <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+          <li><a href="tasbeeh.html" class="active">المسبحة</a></li>
+
+          <li><a href="kids.html">ركن الأطفال</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button id="theme-toggle" aria-label="Toggle theme">
+            <i class="fa-solid fa-cloud-sun"></i>
+          </button>
+          <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="page-hero">
+      <div class="container">
+        <h1 class="fade-in-up">المسبحة الإلكترونية الذكية</h1>
+        <p class="fade-in-up delay-1">
+          "وَاذْكُر رَّبَّكَ كَثِيرًا وَسَبِّحْ بِالْعَشِيِّ وَالْإِبْكَارِ"
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="tasbeeh-container reveal active delay-2">
+        <div class="phrase-selector">
+          <select
+            class="phrase-select"
+            id="phrase-select"
+            title="اختر التسبيح"
+            aria-label="اختر التسبيح"
+          >
+            <option value="33">سُبْحَانَ اللَّهِ (33)</option>
+            <option value="33">الْحَمْدُ لِلَّهِ (33)</option>
+            <option value="34">اللَّهُ أَكْبَرُ (34)</option>
+            <option value="100">
+              سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ
+              (100)
+            </option>
+            <option value="100">
+              لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ (100)
+            </option>
+            <option value="100">
+              أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ الَّذِي لَا إِلَهَ إِلَّا هُوَ
+              الْحَيَّ الْقَيُّومَ وَأَتُوبُ إِلَيْهِ (100)
+            </option>
+            <option value="100">
+              اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي (100)
+            </option>
+            <option value="100">
+              رَبِّ اغْفِرْ لِي وَتُبْ عَلَيَّ إِنَّكَ أَنْتَ التَّوَّابُ
+              الرَّحِيمُ (100)
+            </option>
+            <option value="100">
+              يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ (100)
+            </option>
+            <option value="10">
+              اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ (10)
+            </option>
+            <option value="100">
+              لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ
+              الظَّالِمِينَ (100)
+            </option>
+            <option value="100">
+              حَسْبِيَ اللَّهُ وَنِعْمَ الْوَكِيلُ (100)
+            </option>
+            <option value="0">
+              رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ
+              صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا (بدون هدف)
+            </option>
+            <option value="100">
+              سُبْحَانَ اللَّهِ العَظِيمِ وَبِحَمْدِهِ (100)
+            </option>
+            <option value="100">
+              لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ... (100)
+            </option>
+            <option value="100">
+              أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ (100)
+            </option>
+            <option value="0">تسبيح حر (بدون هدف)</option>
+          </select>
+
+          <div class="goal-indicator" id="goal-container">
+            <span>الهدف: <span id="goal-text">33</span></span>
+            <div class="goal-progress">
+              <div class="goal-bar" id="goal-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="counter-display">
+          <div class="count-number" id="count-display">0</div>
+
+          <button class="tap-btn" id="tap-btn">
+            <i class="fa-solid fa-hand-pointer" style="margin-left: 10px"></i>
+            اضغط
+          </button>
+        </div>
+
+        <div class="tasbeeh-controls">
+          <button class="control-btn" id="sound-toggle">
+            <i class="fa-solid fa-volume-high"></i> الصوت: مفعل
+          </button>
+          <button class="control-btn reset" id="reset-btn">
+            <i class="fa-solid fa-rotate-left"></i> تصفير العدد
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Main JS & Tasbeeh JS -->
+    <script src="js/main.js"></script>
+    <script>
+      // Tasbeeh Logic
+      const countDisplay = document.getElementById("count-display");
+      const tapBtn = document.getElementById("tap-btn");
+      const resetBtn = document.getElementById("reset-btn");
+      const soundToggle = document.getElementById("sound-toggle");
+      const phraseSelect = document.getElementById("phrase-select");
+      const goalBar = document.getElementById("goal-bar");
+      const goalText = document.getElementById("goal-text");
+      const goalContainer = document.getElementById("goal-container");
+
+      let count = parseInt(localStorage.getItem("tasbeeh-count")) || 0;
+      let soundEnabled = localStorage.getItem("tasbeeh-sound") !== "false";
+      let currentGoal = parseInt(phraseSelect.value);
+
+      // Initialize UI
+      countDisplay.textContent = count;
+      updateSoundUI();
+      updateGoalUI();
+
+      // Audio Context for crisp generic click sound without needing external files
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+      function playClick() {
+        if (!soundEnabled) return;
+        try {
+          if (audioCtx.state === "suspended") audioCtx.resume();
+
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(600, audioCtx.currentTime); // Pitch
+          osc.frequency.exponentialRampToValueAtTime(
+            100,
+            audioCtx.currentTime + 0.1,
+          );
+
+          gain.gain.setValueAtTime(0.5, audioCtx.currentTime); // Vol
+          gain.gain.exponentialRampToValueAtTime(
+            0.01,
+            audioCtx.currentTime + 0.1,
+          );
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.1);
+        } catch (e) {}
+      }
+
+      function playVibrate() {
+        if (navigator.vibrate) {
+          navigator.vibrate(20); // 20ms haptic feedback for mobiles
+        }
+      }
+
+      tapBtn.addEventListener("click", () => {
+        count++;
+        countDisplay.textContent = count;
+        localStorage.setItem("tasbeeh-count", count);
+
+        // Animation pulse
+        countDisplay.classList.remove("pulse");
+        void countDisplay.offsetWidth; // trigger reflow
+        countDisplay.classList.add("pulse");
+
+        playClick();
+        playVibrate();
+        updateGoalUI();
+      });
+
+      resetBtn.addEventListener("click", () => {
+        if (confirm("هل أنت متأكد من تصفير العداد؟")) {
+          count = 0;
+          countDisplay.textContent = count;
+          localStorage.setItem("tasbeeh-count", count);
+          updateGoalUI();
+        }
+      });
+
+      soundToggle.addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+        localStorage.setItem("tasbeeh-sound", soundEnabled);
+        updateSoundUI();
+      });
+
+      phraseSelect.addEventListener("change", (e) => {
+        currentGoal = parseInt(e.target.value);
+        // Optionally, reset counter when changing phrase
+        count = 0;
+        countDisplay.textContent = count;
+        localStorage.setItem("tasbeeh-count", count);
+        updateGoalUI();
+      });
+
+      function updateSoundUI() {
+        if (soundEnabled) {
+          soundToggle.innerHTML =
+            '<i class="fa-solid fa-volume-high"></i> الصوت: مفعل';
+          soundToggle.style.color = "var(--text-main)";
+        } else {
+          soundToggle.innerHTML =
+            '<i class="fa-solid fa-volume-xmark"></i> الصوت: معطل';
+          soundToggle.style.color = "var(--text-muted)";
+        }
+      }
+
+      function updateGoalUI() {
+        if (currentGoal === 0) {
+          goalContainer.style.display = "none";
+          return;
+        }
+
+        goalContainer.style.display = "flex";
+        goalText.textContent = currentGoal;
+
+        // Calculate percentage
+        let percentage = (count / currentGoal) * 100;
+        if (percentage > 100) percentage = 100;
+
+        goalBar.style.width = `${percentage}%`;
+
+        if (percentage === 100) {
+          goalBar.style.backgroundColor = "var(--primary-color)";
+          // Optional: distinct sound or vibration when goal reached
+          if (count === currentGoal && navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+          }
+        } else {
+          goalBar.style.backgroundColor = "var(--accent-gold)";
+        }
+      }
+
+      // Prevent zoom on double tap in iOS
+      document.addEventListener(
+        "dblclick",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false },
+      );
+    </script>
+  </body>
+</html>
+>>>>>>> 7194fd316f5879c5a1b0c0285d02ac58ee0672e1
