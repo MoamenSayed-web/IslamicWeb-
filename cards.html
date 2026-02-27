@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <title>صانع البطاقات الإسلامية - سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;800&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .cards-hero {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary),
+          var(--bg-main)
+        );
+        border-bottom: 1px solid var(--border-color);
+      }
+      .cards-hero h1 {
+        font-family: var(--font-cairo);
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+      }
+      .cards-hero p {
+        font-family: var(--font-tajawal);
+        font-size: 1.2rem;
+        color: var(--text-muted);
+      }
+
+      .editor-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 30px;
+        padding: 0 20px;
+      }
+
+      @media (max-width: 768px) {
+        .editor-container {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .controls-panel {
+        background: var(--bg-secondary);
+        padding: 30px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      }
+
+      .controls-panel label {
+        display: block;
+        font-family: var(--font-cairo);
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .controls-panel input[type="text"] {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        font-family: var(--font-tajawal);
+        font-size: 1rem;
+        margin-bottom: 20px;
+        background: var(--bg-color);
+        color: var(--text-main);
+      }
+
+      .color-picker-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .color-picker {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid var(--border-color);
+        cursor: pointer;
+      }
+      .color-picker.active {
+        border: 2px solid var(--primary-color);
+        transform: scale(1.1);
+      }
+
+      .templates-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .template-thumb {
+        width: 100%;
+        height: 80px;
+        border-radius: 10px;
+        border: 2px solid var(--border-color);
+        cursor: pointer;
+        background-size: cover;
+        background-position: center;
+        transition: all 0.2s;
+      }
+      .template-thumb:hover,
+      .template-thumb.active {
+        border-color: var(--primary-color);
+        transform: scale(1.05);
+      }
+
+      .btn-download {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background: var(--primary-color);
+        color: white;
+        text-align: center;
+        border-radius: 15px;
+        text-decoration: none;
+        font-family: var(--font-cairo);
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-download:hover {
+        background: var(--accent-gold);
+        transform: translateY(-2px);
+      }
+
+      .canvas-container {
+        background: var(--bg-color);
+        border-radius: 20px;
+        padding: 20px;
+        border: 2px dashed var(--border-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+        position: relative;
+      }
+
+      canvas {
+        max-width: 100%;
+        height: auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+      }
+    </style>
+  </head>
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html" class="active">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <header class="cards-hero">
+      <div class="container fade-in-up">
+        <h1>صانع البطاقات الإسلامية</h1>
+        <p>صمم بطاقة تهنئة باسمك بأجمل التصاميم وشاركها مع أصدقائك وعائلتك</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="editor-container fade-in-up delay-1">
+        <!-- Controls -->
+        <div class="controls-panel">
+          <label>اختر القالب:</label>
+          <div class="templates-grid">
+            <!-- We will use CSS gradients for templates if real images are not available -->
+            <div
+              class="template-thumb active"
+              data-style="ramadan"
+              style="background: linear-gradient(135deg, #1e3a8a, #312e81)"
+            ></div>
+            <div
+              class="template-thumb"
+              data-style="eid"
+              style="background: linear-gradient(135deg, #10b981, #047857)"
+            ></div>
+            <div
+              class="template-thumb"
+              data-style="jumuah"
+              style="background: linear-gradient(135deg, #ca8a04, #854d0e)"
+            ></div>
+            <div
+              class="template-thumb"
+              data-style="minimal"
+              style="background: linear-gradient(135deg, #f8fafc, #e2e8f0)"
+            ></div>
+          </div>
+
+          <label for="name-input">الاسم المراد كتابته:</label>
+          <input
+            type="text"
+            id="name-input"
+            placeholder="مثال: أحمد محمد..."
+            value="أحمد محمد"
+          />
+
+          <label>لون الخط:</label>
+          <div class="color-picker-container">
+            <div
+              class="color-picker active"
+              style="background: #ffffff"
+              data-color="#ffffff"
+            ></div>
+            <div
+              class="color-picker"
+              style="background: #ca8a04"
+              data-color="#ca8a04"
+            ></div>
+            <div
+              class="color-picker"
+              style="background: #ffffff"
+              data-color="#1e293b"
+            ></div>
+          </div>
+
+          <button class="btn-download" id="download-btn">
+            <i class="fa-solid fa-download"></i> تحميل البطاقة
+          </button>
+        </div>
+
+        <!-- Canvas Area -->
+        <div class="canvas-container">
+          <canvas id="card-canvas" width="800" height="800"></canvas>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById("card-canvas");
+        const ctx = canvas.getContext("2d");
+
+        const nameInput = document.getElementById("name-input");
+        const downloadBtn = document.getElementById("download-btn");
+        const templates = document.querySelectorAll(".template-thumb");
+        const colorPickers = document.querySelectorAll(".color-picker");
+
+        let currentStyle = "ramadan";
+        let currentTextColor = "#ffffff";
+
+        // Load fonts before drawing if possible, or trigger draw on input
+        document.fonts.ready.then(() => {
+          drawCard();
+        });
+
+        function drawCard() {
+          const width = canvas.width;
+          const height = canvas.height;
+          const name = nameInput.value.trim();
+
+          // 1. Draw Background
+          ctx.clearRect(0, 0, width, height);
+
+          // Define gradients based on style
+          let gradient;
+          if (currentStyle === "ramadan") {
+            gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, "#1e3a8a");
+            gradient.addColorStop(1, "#312e81");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw decorative moon
+            ctx.beginPath();
+            ctx.arc(400, 250, 100, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+            ctx.fill();
+
+            ctx.fillStyle = "#ca8a04";
+            ctx.font = "bold 80px 'Amiri', serif";
+            ctx.textAlign = "center";
+            ctx.fillText("مبارك عليكم الشهر", 400, 250);
+          } else if (currentStyle === "eid") {
+            gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, "#10b981");
+            gradient.addColorStop(1, "#047857");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = "#fef08a";
+            ctx.font = "bold 90px 'Amiri', serif";
+            ctx.textAlign = "center";
+            ctx.fillText("عيدكم مبارك", 400, 250);
+          } else if (currentStyle === "jumuah") {
+            gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, "#ca8a04");
+            gradient.addColorStop(1, "#854d0e");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 90px 'Amiri', serif";
+            ctx.textAlign = "center";
+            ctx.fillText("جمعة مباركة", 400, 250);
+          } else if (currentStyle === "minimal") {
+            gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, "#f8fafc");
+            gradient.addColorStop(1, "#e2e8f0");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = "#1e293b";
+            ctx.font = "bold 70px 'Amiri', serif";
+            ctx.textAlign = "center";
+            ctx.fillText("تقبل الله طاعاتكم", 400, 250);
+            // Auto switch text color to dark to be visible
+            if (currentTextColor === "#ffffff") currentTextColor = "#1e293b";
+          }
+
+          // Draw ornamental border
+          ctx.strokeStyle = "rgba(255,255,255,0.3)";
+          if (currentStyle === "minimal") ctx.strokeStyle = "rgba(0,0,0,0.1)";
+          ctx.lineWidth = 5;
+          ctx.strokeRect(30, 30, width - 60, height - 60);
+          ctx.strokeRect(40, 40, width - 80, height - 80);
+
+          // 2. Draw Greeting Text
+          ctx.fillStyle = currentTextColor;
+          ctx.font = "40px 'Cairo', sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("أطيب التمنيات لكم من", 400, 450);
+
+          // 3. Draw Name
+          ctx.fillStyle = currentTextColor;
+          ctx.font = "bold 60px 'Cairo', sans-serif";
+          ctx.fillText(name !== "" ? name : "الاسم هنا", 400, 550);
+
+          // Footer Logo
+          ctx.font = "30px 'Cairo', sans-serif";
+          ctx.fillStyle =
+            currentStyle === "minimal"
+              ? "rgba(0,0,0,0.5)"
+              : "rgba(255,255,255,0.5)";
+          ctx.fillText("🌙 موقع سراج", 400, 720);
+        }
+
+        // Event Listeners
+        nameInput.addEventListener("input", drawCard);
+
+        templates.forEach((t) => {
+          t.addEventListener("click", (e) => {
+            templates.forEach((el) => el.classList.remove("active"));
+            t.classList.add("active");
+            currentStyle = t.getAttribute("data-style");
+            drawCard();
+          });
+        });
+
+        colorPickers.forEach((c) => {
+          c.addEventListener("click", (e) => {
+            colorPickers.forEach((el) => el.classList.remove("active"));
+            c.classList.add("active");
+            currentTextColor = c.getAttribute("data-color");
+            drawCard();
+          });
+        });
+
+        downloadBtn.addEventListener("click", () => {
+          const link = document.createElement("a");
+          link.download = "بطاقة-تهنئة.png";
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+        });
+      });
+    </script>
+  </body>
+</html>

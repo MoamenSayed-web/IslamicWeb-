@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <title>الإذاعة الإسلامية - سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .radio-hero {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary),
+          var(--bg-main)
+        );
+        border-bottom: 1px solid var(--border-color);
+      }
+      .radio-hero h1 {
+        font-family: var(--font-cairo);
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+      }
+      .radio-hero p {
+        font-family: var(--font-tajawal);
+        font-size: 1.2rem;
+        color: var(--text-muted);
+      }
+
+      .player-container {
+        max-width: 600px;
+        margin: -40px auto 40px;
+        background: var(--bg-color);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: relative;
+        z-index: 10;
+        border: 1px solid var(--border-color);
+      }
+
+      .now-playing-icon {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--accent-gold)
+        );
+        margin: 0 auto 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem;
+        color: white;
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        transition: transform 0.5s linear;
+      }
+      .now-playing-icon.playing {
+        animation: spin 5s linear infinite;
+      }
+
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .station-title {
+        font-family: var(--font-cairo);
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--text-main);
+        margin-bottom: 5px;
+      }
+
+      .station-status {
+        font-family: var(--font-tajawal);
+        color: var(--text-muted);
+        margin-bottom: 25px;
+      }
+      .station-status.live {
+        color: #ef4444;
+        font-weight: bold;
+      }
+
+      .custom-audio-player {
+        width: 100%;
+        border-radius: 30px;
+        outline: none;
+      }
+
+      .stations-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 60px;
+      }
+
+      .station-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .station-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-color);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      .station-card i {
+        font-size: 2rem;
+        color: var(--accent-gold);
+      }
+
+      .station-card h3 {
+        font-family: var(--font-cairo);
+        font-size: 1.2rem;
+        color: var(--text-main);
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-color);
+        color: var(--text-main);
+        font-family: var(--font-tajawal);
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        outline: none;
+      }
+      .search-input:focus {
+        border-color: var(--primary-color);
+      }
+    </style>
+  </head>
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html" class="active">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <header class="radio-hero">
+      <div class="container fade-in-up">
+        <h1>إذاعة سراج الإسلامية</h1>
+        <p>استمع لأجمل التلاوات والبرامج الدينية على مدار الساعة</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="player-container fade-in-up delay-1">
+        <div class="now-playing-icon" id="playing-icon">
+          <i class="fa-solid fa-radio"></i>
+        </div>
+        <div class="station-title" id="current-station-name">
+          اختر إذاعة للبدء
+        </div>
+        <div class="station-status" id="station-status">
+          <i class="fa-solid fa-circle"></i> متوقف
+        </div>
+
+        <audio
+          id="main-audio"
+          class="custom-audio-player"
+          controls
+          preload="none"
+        ></audio>
+      </div>
+
+      <div class="fade-in-up delay-2">
+        <h2
+          style="
+            font-family: var(--font-cairo);
+            margin-bottom: 15px;
+            color: var(--text-main);
+          "
+        >
+          قائمة الإذاعات
+        </h2>
+        <input
+          type="text"
+          id="station-search"
+          class="search-input"
+          placeholder="ابحث عن إذاعة (مثال: الفتاوى، الرقية، العفاسي)..."
+        />
+
+        <div
+          id="loading"
+          style="
+            text-align: center;
+            padding: 40px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+          "
+        >
+          <i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل
+          الإذاعات...
+        </div>
+
+        <div class="stations-grid" id="stations-container">
+          <!-- Stations injected via JS -->
+        </div>
+      </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const stationsContainer = document.getElementById("stations-container");
+        const loadingEl = document.getElementById("loading");
+        const searchInput = document.getElementById("station-search");
+
+        const audioPlayer = document.getElementById("main-audio");
+        const currentStationName = document.getElementById(
+          "current-station-name",
+        );
+        const playingIcon = document.getElementById("playing-icon");
+        const stationStatus = document.getElementById("station-status");
+
+        let allStations = [];
+
+        // Fetch from mp3quran API
+        fetch("https://mp3quran.net/api/v3/radios?language=ar")
+          .then((res) => res.json())
+          .then((data) => {
+            allStations = data.radios;
+            renderStations(allStations);
+            loadingEl.style.display = "none";
+          })
+          .catch((err) => {
+            loadingEl.innerHTML =
+              "<p style='color:red;'>عذراً، حدث خطأ في تحميل الإذاعات</p>";
+          });
+
+        function renderStations(stations) {
+          stationsContainer.innerHTML = "";
+          stations.forEach((station) => {
+            const card = document.createElement("div");
+            card.className = "station-card";
+            card.innerHTML = `
+            <i class="fa-solid fa-satellite-dish"></i>
+            <h3>${station.name}</h3>
+          `;
+            card.onclick = () => playStation(station);
+            stationsContainer.appendChild(card);
+          });
+        }
+
+        function playStation(station) {
+          currentStationName.textContent = station.name;
+          audioPlayer.src = station.url;
+          audioPlayer.play();
+        }
+
+        audioPlayer.addEventListener("play", () => {
+          playingIcon.classList.add("playing");
+          stationStatus.innerHTML =
+            '<i class="fa-solid fa-circle fade-in-up" style="animation-iteration-count: infinite;"></i> بث مباشر';
+          stationStatus.classList.add("live");
+        });
+
+        audioPlayer.addEventListener("pause", () => {
+          playingIcon.classList.remove("playing");
+          stationStatus.innerHTML = '<i class="fa-solid fa-circle"></i> متوقف';
+          stationStatus.classList.remove("live");
+        });
+
+        searchInput.addEventListener("input", (e) => {
+          const term = e.target.value.toLowerCase();
+          const filtered = allStations.filter((s) =>
+            s.name.toLowerCase().includes(term),
+          );
+          renderStations(filtered);
+        });
+      });
+    </script>
+  </body>
+</html>

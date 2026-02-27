@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <title>قائمة الأوائل - سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      body {
+        background-color: #f8fafc;
+      }
+      [data-theme="dark"] body {
+        background-color: var(--bg-main);
+      }
+
+      .leaderboard-container {
+        max-width: 800px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 30px;
+        padding: 40px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+        border: 3px solid #fef08a;
+      }
+
+      [data-theme="dark"] .leaderboard-container {
+        background: var(--bg-secondary);
+        border-color: #ca8a04;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      }
+
+      .leaderboard-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .leaderboard-header h1 {
+        font-family: var(--font-cairo);
+        font-size: 3rem;
+        color: var(--primary-color);
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .leaderboard-header i {
+        color: #f59e0b; /* Gold */
+      }
+
+      .leaderboard-header p {
+        font-family: var(--font-tajawal);
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        margin-top: 10px;
+      }
+
+      .rank-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .rank-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 20px;
+        background: #f8fafc;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        border: 1px solid var(--border-color);
+      }
+
+      [data-theme="dark"] .rank-item {
+        background: var(--bg-main);
+      }
+
+      .rank-item:hover {
+        transform: translateX(-10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        border-color: var(--accent-gold);
+      }
+
+      .rank-item.top-1 {
+        background: linear-gradient(135deg, #fef08a, #fde047);
+        border-color: #ca8a04;
+      }
+      .rank-item.top-1 .rank-name,
+      .rank-item.top-1 .rank-score {
+        color: #854d0e;
+      }
+      .rank-item.top-2 {
+        background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+        border-color: #94a3b8;
+      }
+      .rank-item.top-2 .rank-name,
+      .rank-item.top-2 .rank-score {
+        color: #334155;
+      }
+      .rank-item.top-3 {
+        background: linear-gradient(135deg, #fed7aa, #fdba74);
+        border-color: #ea580c;
+      }
+      .rank-item.top-3 .rank-name,
+      .rank-item.top-3 .rank-score {
+        color: #9a3412;
+      }
+
+      [data-theme="dark"] .rank-item.top-1 {
+        background: linear-gradient(135deg, #ca8a04, #a16207);
+      }
+      [data-theme="dark"] .rank-item.top-1 .rank-name,
+      [data-theme="dark"] .rank-item.top-1 .rank-score {
+        color: #fef08a;
+      }
+
+      [data-theme="dark"] .rank-item.top-2 {
+        background: linear-gradient(135deg, #64748b, #475569);
+      }
+      [data-theme="dark"] .rank-item.top-2 .rank-name,
+      [data-theme="dark"] .rank-item.top-2 .rank-score {
+        color: #f8fafc;
+      }
+
+      [data-theme="dark"] .rank-item.top-3 {
+        background: linear-gradient(135deg, #c2410c, #9a3412);
+      }
+      [data-theme="dark"] .rank-item.top-3 .rank-name,
+      [data-theme="dark"] .rank-item.top-3 .rank-score {
+        color: #fed7aa;
+      }
+
+      .rank-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .rank-number {
+        width: 40px;
+        height: 40px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-family: var(--font-cairo);
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      [data-theme="dark"] .rank-number {
+        background: var(--bg-secondary);
+        color: var(--text-main);
+      }
+
+      .rank-name {
+        font-family: var(--font-cairo);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-main);
+      }
+
+      .rank-score {
+        font-family: var(--font-tajawal);
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .rank-score i {
+        color: #10b981;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+      }
+      .empty-state i {
+        font-size: 4rem;
+        color: var(--border-color);
+        margin-bottom: 20px;
+      }
+      .empty-state h3 {
+        font-family: var(--font-cairo);
+        color: var(--text-muted);
+      }
+
+      .btn-back {
+        display: inline-block;
+        margin-top: 30px;
+        background: var(--primary-color);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-family: var(--font-tajawal);
+        font-weight: bold;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-back:hover {
+        background: var(--accent-gold);
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <div class="leaderboard-container fade-in-up">
+        <div class="leaderboard-header">
+          <h1><i class="fa-solid fa-trophy"></i> لوحة الأبطال</h1>
+          <p>أفضل الأصدقاء الذين شاركوا معنا وحصلوا على أعلى النقاط!</p>
+        </div>
+
+        <ul class="rank-list" id="leaderboard-list">
+          <!-- Ranks will be injected here -->
+        </ul>
+
+        <div style="text-align: center">
+          <a href="kids.html" class="btn-back"
+            ><i class="fa-solid fa-arrow-right"></i> العودة لركن الأطفال</a
+          >
+        </div>
+      </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const leaderboardList = document.getElementById("leaderboard-list");
+        let scores = [];
+        try {
+          scores = JSON.parse(localStorage.getItem("kidsLeaderboard")) || [];
+        } catch (e) {}
+
+        if (scores.length === 0) {
+          leaderboardList.innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-face-sad-tear"></i>
+              <h3>لا يوجد أبطال بعد.. كن أنت أول بطل يضيف اسمه!</h3>
+            </div>
+          `;
+          return;
+        }
+
+        // Ensure sorted by score (descending)
+        scores.sort((a, b) => b.score - a.score);
+
+        // We only show top 50 to avoid clutter
+        const topScores = scores.slice(0, 50);
+
+        let html = "";
+        topScores.forEach((entry, index) => {
+          let topClass = "";
+          let medalHtml = "";
+          let certHtml = "";
+
+          if (index === 0) {
+            topClass = "top-1";
+            medalHtml = `<i class="fa-solid fa-medal" style="color: #ca8a04; margin-left:10px;"></i>`;
+          } else if (index === 1) {
+            topClass = "top-2";
+            medalHtml = `<i class="fa-solid fa-medal" style="color: #475569; margin-left:10px;"></i>`;
+          } else if (index === 2) {
+            topClass = "top-3";
+            medalHtml = `<i class="fa-solid fa-medal" style="color: #9a3412; margin-left:10px;"></i>`;
+          }
+
+          if (index < 3) {
+            certHtml = `<button onclick="downloadCert('${entry.name}', ${entry.score})" style="background:var(--primary-color); color:white; border:none; padding:5px 12px; border-radius:15px; cursor:pointer; font-size:0.9rem; margin-right:20px; font-family:var(--font-tajawal); transition:all 0.3s;" onmouseover="this.style.background='var(--accent-gold)'" onmouseout="this.style.background='var(--primary-color)'"><i class="fa-solid fa-certificate"></i> شهادة</button>`;
+          }
+
+          html += `
+          <li class="rank-item ${topClass}">
+            <div class="rank-info">
+              <div class="rank-number">${index + 1}</div>
+              <div class="rank-name">${medalHtml}${entry.name}</div>
+            </div>
+            <div class="rank-score">
+              ${entry.score} <i class="fa-solid fa-star"></i>
+              ${certHtml}
+            </div>
+          </li>
+        `;
+        });
+
+        leaderboardList.innerHTML = html;
+      });
+      document.addEventListener("DOMContentLoaded", () => {
+        // Font loading code to ensure canvas uses correct fonts
+        document.fonts.ready.then(() => {
+          // Fonts are ready
+        });
+      });
+
+      window.downloadCert = function (name, score) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 1000;
+        canvas.height = 700;
+        const ctx = canvas.getContext("2d");
+
+        // 1. Background
+        const gradient = ctx.createLinearGradient(0, 0, 1000, 700);
+        gradient.addColorStop(0, "#f0fdf4");
+        gradient.addColorStop(1, "#dcfce7");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1000, 700);
+
+        // 2. Borders
+        ctx.strokeStyle = "#ca8a04"; // Gold
+        ctx.lineWidth = 15;
+        ctx.strokeRect(20, 20, 960, 660);
+        ctx.strokeStyle = "#10b981"; // Green
+        ctx.lineWidth = 5;
+        ctx.strokeRect(45, 45, 910, 610);
+
+        // 3. Header
+        ctx.fillStyle = "#10b981";
+        ctx.font = "bold 60px 'Cairo', sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("شهادة تفوق وتميز", 500, 160);
+
+        // 4. Subtitle
+        ctx.fillStyle = "#334155";
+        ctx.font = "35px 'Tajawal', sans-serif";
+        ctx.fillText(
+          "يسر إدارة موقع سراج أن تمنح هذه الشهادة للبطل المقرئ:",
+          500,
+          260,
+        );
+
+        // 5. Name
+        ctx.fillStyle = "#ca8a04";
+        ctx.font = "bold 80px 'Cairo', sans-serif";
+        ctx.fillText(name, 500, 380);
+
+        // 6. Reason
+        ctx.fillStyle = "#334155";
+        ctx.font = "30px 'Tajawal', sans-serif";
+        ctx.fillText(
+          `لحصوله على مركز متقدم بمجموع (${score}) نقطة في مسابقات طيور الجنة.`,
+          500,
+          480,
+        );
+
+        // 7. Footer
+        ctx.fillStyle = "#10b981";
+        ctx.font = "30px 'Cairo', sans-serif";
+        ctx.fillText("أحسنت يا بطل، وإلى الأمام دائماً! 🌟", 500, 580);
+
+        // Download Process
+        const link = document.createElement("a");
+        link.download = `شهادة-البطل-${name}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      };
+    </script>
+  </body>
+</html>

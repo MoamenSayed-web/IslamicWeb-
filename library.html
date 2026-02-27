@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <title>المكتبة الإسلامية | سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .library-container {
+        position: relative;
+        z-index: 10;
+        margin-top: -40px;
+        margin-bottom: 60px;
+      }
+      .filters {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
+      .filter-btn {
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: 2px solid var(--border-color);
+        background: var(--bg-secondary);
+        color: var(--text-main);
+        font-family: var(--font-tajawal);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+      .filter-btn.active,
+      .filter-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+      }
+      .book-card {
+        background: var(--bg-secondary);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: var(--box-shadow);
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+      }
+      .book-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(11, 112, 83, 0.2);
+        border-color: var(--accent-gold);
+      }
+      .book-cover {
+        height: 200px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark),
+          var(--primary-color)
+        );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--accent-gold);
+        font-size: 4rem;
+        position: relative;
+      }
+      .book-cover::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 30px;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+      }
+      .book-cover::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 15px;
+        width: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        border-left: 1px solid rgba(0, 0, 0, 0.2);
+      }
+      .book-info {
+        padding: 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .book-category {
+        font-size: 0.8rem;
+        color: var(--primary-color);
+        background: var(--primary-light);
+        padding: 3px 10px;
+        border-radius: 20px;
+        align-self: flex-start;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      .book-title {
+        font-family: var(--font-cairo);
+        font-size: 1.3rem;
+        color: var(--text-main);
+        margin-bottom: 10px;
+      }
+      .book-author {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+      }
+      .book-author i {
+        margin-left: 5px;
+      }
+      .book-actions {
+        margin-top: auto;
+        display: flex;
+        gap: 10px;
+      }
+      .book-actions .btn {
+        flex: 1;
+        padding: 10px 0;
+        font-size: 0.95rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html" class="active">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <header class="page-hero">
+      <div class="container">
+        <h1 class="fade-in-up">المكتبة الإسلامية</h1>
+        <p class="fade-in-up delay-1">
+          مجموعة منتقاة من أمهات الكتب الإسلامية الموثوقة لتتزود منها العلم
+          الشرعي النافع.
+        </p>
+      </div>
+    </header>
+
+    <section class="section-padding">
+      <div class="container library-container reveal active">
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">الكل</button>
+          <button class="filter-btn" data-filter="aqeedah">العقيدة</button>
+          <button class="filter-btn" data-filter="tafseer">التفسير</button>
+          <button class="filter-btn" data-filter="hadeeth">الحديث</button>
+          <button class="filter-btn" data-filter="seerah">
+            السيرة النبوية
+          </button>
+          <button class="filter-btn" data-filter="fiqh">الفقه</button>
+        </div>
+
+        <div class="books-grid" id="books-grid">
+          <!-- Books injected via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"
+            ><i class="fa-solid fa-moon"></i> سراج</a
+          >
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          جميع الحقوق محفوظة &copy; <span id="current-year"></span> سراج
+          الإسلامية.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+      const booksData = [
+        {
+          id: 1,
+          title: "حصن المسلم من أذكار الكتاب والسنة",
+          author: "سعيد بن علي بن وهف القحطاني",
+          category: "aqeedah",
+          catName: "أذكار وعقيدة",
+          icon: "fa-book-open",
+        },
+        {
+          id: 2,
+          title: "رياض الصالحين",
+          author: "الإمام النووي",
+          category: "hadeeth",
+          catName: "الحديث",
+          icon: "fa-book",
+        },
+        {
+          id: 3,
+          title: "الرحيق المختوم",
+          author: "صفي الرحمن المباركفوري",
+          category: "seerah",
+          catName: "السيرة النبوية",
+          icon: "fa-mosque",
+        },
+        {
+          id: 4,
+          title: "تفسير ابن كثير (المصباح المنير)",
+          author: "ابن كثير / جماعة من العلماء",
+          category: "tafseer",
+          catName: "التفسير",
+          icon: "fa-book-quran",
+        },
+        {
+          id: 5,
+          title: "فقه السنة",
+          author: "سيد سابق",
+          category: "fiqh",
+          catName: "الفقه",
+          icon: "fa-scale-balanced",
+        },
+        {
+          id: 6,
+          title: "الأربعون النووية",
+          author: "الإمام النووي",
+          category: "hadeeth",
+          catName: "الحديث",
+          icon: "fa-book",
+        },
+        {
+          id: 7,
+          title: "كتاب التوحيد",
+          author: "محمد بن عبد الوهاب",
+          category: "aqeedah",
+          catName: "العقيدة",
+          icon: "fa-hand-holding-heart",
+        },
+        {
+          id: 8,
+          title: "صور من حياة الصحابة",
+          author: "عبد الرحمن رأفت الباشا",
+          category: "seerah",
+          catName: "السيرة والتاريخ",
+          icon: "fa-users",
+        },
+      ];
+
+      const booksGrid = document.getElementById("books-grid");
+      const filterBtns = document.querySelectorAll(".filter-btn");
+
+      function renderBooks(filterType) {
+        booksGrid.innerHTML = "";
+        const filtered =
+          filterType === "all"
+            ? booksData
+            : booksData.filter((b) => b.category === filterType);
+
+        filtered.forEach((book) => {
+          const card = document.createElement("div");
+          card.className = "book-card fade-in-up";
+          card.innerHTML = `
+            <div class="book-cover">
+              <i class="fa-solid ${book.icon}"></i>
+            </div>
+            <div class="book-info">
+              <span class="book-category">${book.catName}</span>
+              <h3 class="book-title">${book.title}</h3>
+              <p class="book-author"><i class="fa-solid fa-pen-nib"></i> ${book.author}</p>
+              
+              <div class="book-actions">
+                <button class="btn btn-primary" onclick="alert('جاري إعداد واجهة القراءة...')"><i class="fa-solid fa-glasses"></i> قراءة</button>
+                <button class="btn btn-outline" style="border-color: var(--border-color); color: var(--text-main);" onclick="alert('التحميل سيكون متاحاً قريباً')"><i class="fa-solid fa-download"></i> PDF</button>
+              </div>
+            </div>
+          `;
+          booksGrid.appendChild(card);
+        });
+      }
+
+      filterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderBooks(btn.dataset.filter);
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => renderBooks("all"));
+    </script>
+  </body>
+</html>

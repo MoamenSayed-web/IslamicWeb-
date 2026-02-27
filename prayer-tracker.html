@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <title>متتبع الصلوات | سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .tracker-container {
+        max-width: 900px;
+        margin: -40px auto 60px;
+        position: relative;
+        z-index: 10;
+      }
+      .tracker-card {
+        padding: 40px;
+        border-top: 5px solid var(--accent-gold);
+        background: var(--bg-secondary);
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+      }
+
+      .date-header {
+        text-align: center;
+        margin-bottom: 30px;
+        font-family: var(--font-cairo);
+      }
+      .date-header h2 {
+        color: var(--primary-color);
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+      .date-navigation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      .date-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+      .date-btn:hover {
+        color: var(--primary-color);
+      }
+
+      .prayers-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .prayer-item {
+        background: var(--bg-color);
+        border: 1px solid var(--border-color);
+        padding: 20px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.3s;
+      }
+      .prayer-item:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .prayer-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .prayer-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--primary-light);
+        color: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+      }
+      .prayer-name {
+        font-family: var(--font-cairo);
+        font-weight: bold;
+        font-size: 1.3rem;
+        color: var(--text-main);
+      }
+      .sunnah-info {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-top: 3px;
+      }
+
+      .checkboxes {
+        display: flex;
+        gap: 20px;
+      }
+      .check-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+      .check-group span {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      /* Custom Checkbox */
+      .custom-checkbox {
+        appearance: none;
+        background-color: var(--bg-secondary);
+        margin: 0;
+        font: inherit;
+        color: currentColor;
+        width: 30px;
+        height: 30px;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .custom-checkbox::before {
+        content: "";
+        width: 16px;
+        height: 16px;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        transform: scale(0);
+        background-color: white;
+        transition: 120ms transform ease-in-out;
+      }
+      .custom-checkbox:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+      .custom-checkbox.sunnah:checked {
+        background-color: var(--accent-gold);
+        border-color: var(--accent-gold);
+      }
+      .custom-checkbox:checked::before {
+        transform: scale(1);
+      }
+
+      .daily-progress {
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+      }
+      .daily-progress h3 {
+        margin-bottom: 20px;
+        color: var(--primary-color);
+      }
+      .progress-bar-container {
+        width: 100%;
+        height: 20px;
+        background: var(--bg-color);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--primary-color);
+        width: 0%;
+        transition: width 0.5s ease;
+      }
+    </style>
+  </head>
+
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html" class="active">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <header class="page-hero">
+      <div class="container">
+        <h1 class="fade-in-up">متتبع الصلوات</h1>
+        <p class="fade-in-up delay-1">
+          "إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا"
+        </p>
+      </div>
+    </header>
+
+    <section class="section-padding">
+      <div class="container tracker-container">
+        <div class="tracker-card reveal active">
+          <div class="date-header">
+            <h2 id="display-date">اليوم</h2>
+            <div class="date-navigation">
+              <button class="date-btn" id="prev-day">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+              <span
+                id="date-text"
+                style="font-weight: bold; color: var(--text-muted)"
+              ></span>
+              <button class="date-btn" id="next-day" disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="prayers-list" id="prayers-list">
+            <!-- Populated by JS -->
+          </div>
+
+          <div class="daily-progress">
+            <h3>إنجاز اليوم</h3>
+            <div class="progress-bar-container">
+              <div class="progress-fill" id="daily-progress-fill"></div>
+            </div>
+            <p style="margin-top: 10px; color: var(--text-muted)">
+              <span id="progress-percent">0</span>% مكتمل
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"
+            ><i class="fa-solid fa-moon"></i> سراج</a
+          >
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          جميع الحقوق محفوظة &copy; <span id="current-year"></span> سراج
+          الإسلامية.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+      const prayersData = [
+        {
+          id: "fajr",
+          name: "الفجر",
+          icon: "fa-cloud-moon",
+          sunnah: { before: 2, after: 0 },
+        },
+        {
+          id: "dhuhr",
+          name: "الظهر",
+          icon: "fa-sun",
+          sunnah: { before: 4, after: 2 },
+        },
+        {
+          id: "asr",
+          name: "العصر",
+          icon: "fa-cloud-sun",
+          sunnah: { before: 0, after: 0 },
+        },
+        {
+          id: "maghrib",
+          name: "المغرب",
+          icon: "fa-cloud-sun-rain",
+          sunnah: { before: 0, after: 2 },
+        },
+        {
+          id: "isha",
+          name: "العشاء",
+          icon: "fa-moon",
+          sunnah: { before: 0, after: 2 },
+        },
+      ];
+
+      let currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+
+      const displayDate = document.getElementById("display-date");
+      const dateText = document.getElementById("date-text");
+      const prayersList = document.getElementById("prayers-list");
+      const prevBtn = document.getElementById("prev-day");
+      const nextBtn = document.getElementById("next-day");
+      const progressFill = document.getElementById("daily-progress-fill");
+      const progressPercent = document.getElementById("progress-percent");
+
+      function getStorageKey(date) {
+        return `prayer_tracking_${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
+      }
+
+      function loadDayData(date) {
+        const key = getStorageKey(date);
+        return JSON.parse(localStorage.getItem(key)) || {};
+      }
+
+      function saveDayData(date, data) {
+        const key = getStorageKey(date);
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+
+      function updateUI() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (currentDate.getTime() === today.getTime()) {
+          displayDate.textContent = "اليوم";
+          nextBtn.disabled = true;
+          nextBtn.style.opacity = "0.3";
+        } else {
+          displayDate.textContent = "";
+          nextBtn.disabled = false;
+          nextBtn.style.opacity = "1";
+        }
+
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        dateText.textContent = currentDate.toLocaleDateString("ar-EG", options);
+
+        renderPrayers();
+      }
+
+      function renderPrayers() {
+        prayersList.innerHTML = "";
+        const dayData = loadDayData(currentDate);
+
+        prayersData.forEach((prayer) => {
+          const state = dayData[prayer.id] || {
+            fard: false,
+            sunnahBefore: false,
+            sunnahAfter: false,
+          };
+
+          let checkboxesHTML = ``;
+
+          if (prayer.sunnah.before > 0) {
+            checkboxesHTML += `
+              <label class="check-group">
+                <input type="checkbox" class="custom-checkbox sunnah" id="sb_${prayer.id}" ${state.sunnahBefore ? "checked" : ""} onchange="toggleState('${prayer.id}', 'sunnahBefore', this.checked)">
+                <span>سنة قبلية (${prayer.sunnah.before})</span>
+              </label>
+            `;
+          }
+
+          checkboxesHTML += `
+            <label class="check-group">
+              <input type="checkbox" class="custom-checkbox" id="f_${prayer.id}" ${state.fard ? "checked" : ""} onchange="toggleState('${prayer.id}', 'fard', this.checked)">
+              <span>الفرض</span>
+            </label>
+          `;
+
+          if (prayer.sunnah.after > 0) {
+            checkboxesHTML += `
+              <label class="check-group">
+                <input type="checkbox" class="custom-checkbox sunnah" id="sa_${prayer.id}" ${state.sunnahAfter ? "checked" : ""} onchange="toggleState('${prayer.id}', 'sunnahAfter', this.checked)">
+                <span>سنة بعدية (${prayer.sunnah.after})</span>
+              </label>
+            `;
+          }
+
+          const item = document.createElement("div");
+          item.className = "prayer-item";
+          item.innerHTML = `
+            <div class="prayer-info">
+              <div class="prayer-icon"><i class="fa-solid ${prayer.icon}"></i></div>
+              <div>
+                <div class="prayer-name">${prayer.name}</div>
+                <div class="sunnah-info">${prayer.sunnah.before + prayer.sunnah.after} ركعات رواتب</div>
+              </div>
+            </div>
+            <div class="checkboxes">
+              ${checkboxesHTML}
+            </div>
+          `;
+          prayersList.appendChild(item);
+        });
+
+        calculateProgress();
+      }
+
+      window.toggleState = function (prayerId, type, isChecked) {
+        const dayData = loadDayData(currentDate);
+        if (!dayData[prayerId]) {
+          dayData[prayerId] = {
+            fard: false,
+            sunnahBefore: false,
+            sunnahAfter: false,
+          };
+        }
+        dayData[prayerId][type] = isChecked;
+        saveDayData(currentDate, dayData);
+        calculateProgress();
+      };
+
+      function calculateProgress() {
+        const dayData = loadDayData(currentDate);
+        let totalItems = 0;
+        let checkedItems = 0;
+
+        prayersData.forEach((prayer) => {
+          totalItems += 1; // Fard
+          if (dayData[prayer.id] && dayData[prayer.id].fard) checkedItems++;
+
+          if (prayer.sunnah.before > 0) {
+            totalItems += 1;
+            if (dayData[prayer.id] && dayData[prayer.id].sunnahBefore)
+              checkedItems++;
+          }
+          if (prayer.sunnah.after > 0) {
+            totalItems += 1;
+            if (dayData[prayer.id] && dayData[prayer.id].sunnahAfter)
+              checkedItems++;
+          }
+        });
+
+        const pct =
+          totalItems === 0 ? 0 : Math.round((checkedItems / totalItems) * 100);
+        progressFill.style.width = `${pct}%`;
+        progressPercent.textContent = pct;
+
+        if (pct === 100) {
+          progressFill.style.background = "var(--accent-gold)";
+        } else {
+          progressFill.style.background = "var(--primary-color)";
+        }
+      }
+
+      prevBtn.addEventListener("click", () => {
+        currentDate.setDate(currentDate.getDate() - 1);
+        updateUI();
+      });
+
+      nextBtn.addEventListener("click", () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (currentDate.getTime() < today.getTime()) {
+          currentDate.setDate(currentDate.getDate() + 1);
+          updateUI();
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateUI();
+      });
+    </script>
+  </body>
+</html>

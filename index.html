@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <title>سراج</title>
+    <!-- Google Fonts: Cairo & Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@300;400;600;700&family=Reem+Kufi:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html" class="active">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <header class="hero">
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <div class="bismillah-hero fade-in-up">
+          بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+        </div>
+        <h1 class="fade-in-up delay-1">مرحباً بكم في سراج</h1>
+        <p class="fade-in-up delay-1">
+          موقعك الشامل لكل ما يحتاجه المسلم في يومه من قرآن، أحاديث، أذكار،
+          ومواقيت صلاة.
+        </p>
+        <div class="hero-buttons fade-in-up delay-2">
+          <a href="quran.html" class="btn btn-primary">اقرأ القرآن</a>
+          <a href="azkar.html" class="btn btn-outline">أذكار اليوم</a>
+        </div>
+
+        <!-- Quick Prayer Times Widget -->
+        <div class="daily-widget glass-panel fade-in-up delay-3">
+          <div class="widget-header">
+            <h3>الصلاة القادمة</h3>
+            <span id="next-prayer-time">جاري التحميل...</span>
+          </div>
+          <div class="prayer-countdown">
+            <span id="countdown-timer">00:00:00</span>
+            <p>المتبقي على الصلاة</p>
+          </div>
+          <!-- Daily Ayah Suggestion -->
+          <div class="daily-ayah">
+            <i class="fa-solid fa-book-quran"></i>
+            <p id="daily-ayah-text">
+              "إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا
+              أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا
+              تَسْلِيمًا"
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Services Grid -->
+    <section class="services section-padding">
+      <div class="container">
+        <div class="section-title">
+          <h2>أقسام الموقع</h2>
+          <div class="title-separator"></div>
+        </div>
+
+        <div class="services-grid">
+          <!-- Service Card 1 -->
+          <a href="quran.html" class="service-card reveal">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-book-open"></i>
+            </div>
+            <h3>القرآن الكريم</h3>
+            <p>
+              قراءة واستماع للقرآن الكريم بأصوات أشهر القراء مع التفسير
+              والترجمة.
+            </p>
+          </a>
+
+          <!-- Service Card 2 -->
+          <a href="hadith.html" class="service-card reveal delay-1">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-book"></i>
+            </div>
+            <h3>الحديث النبوي</h3>
+            <p>الصحاح والسنن بتصنيفات مرتبة وسهلة البحث والقراءة.</p>
+          </a>
+
+          <!-- Service Card 3 -->
+          <a href="azkar.html" class="service-card reveal delay-2">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-hands-praying"></i>
+            </div>
+            <h3>الأذكار</h3>
+            <p>
+              أذكار الصباح والمساء، أذكار النوم والصلاة مع سبحة لعد الأذكار.
+            </p>
+          </a>
+
+          <!-- Service Card 4 -->
+          <a href="prayer-times.html" class="service-card reveal">
+            <div class="icon-wrapper">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <h3>مواقيت الصلاة</h3>
+            <p>
+              مواقيت الصلاة الدقيقة حسب موقعك الجغرافي مع وتحديد اتجاه القبلة.
+            </p>
+          </a>
+
+          <!-- Service Card 5 -->
+          <a href="tasbeeh.html" class="service-card reveal delay-1">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-ring"></i>
+            </div>
+            <h3>المسبحة الإلكترونية</h3>
+            <p>مسبحة ذكية بتصميم جذاب مع خاصية حفظ العدد والهدف.</p>
+          </a>
+
+          <!-- Service Card 6 -->
+          <a href="radio.html" class="service-card reveal delay-2">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-radio"></i>
+            </div>
+            <h3>الإذاعة الإسلامية</h3>
+            <p>بث مباشر لإذاعة القرآن الكريم وأجمل التلاوات والدروس.</p>
+          </a>
+
+          <!-- Service Card 7 -->
+          <a href="calendar.html" class="service-card reveal">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <h3>التقويم الإسلامي</h3>
+            <p>
+              التاريخ الهجري والميلادي ومتابعة أهم المناسبات ومواسم الطاعات.
+            </p>
+          </a>
+
+          <!-- Extra Cards (Hidden by default) -->
+          <a href="tafseer.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-book-open-reader"></i>
+            </div>
+            <h3>التفسير</h3>
+            <p>تفسير القرآن الكريم بأيسر الطرق للفهم والتدبر.</p>
+          </a>
+
+          <a href="fatwa.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <h3>الفتاوى</h3>
+            <p>فتاوى موثوقة في مختلف أمور الدين والحياة.</p>
+          </a>
+
+          <a href="library.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-book-journal-whills"></i>
+            </div>
+            <h3>المكتبة الإسلامية</h3>
+            <p>كتب ومقالات ودروس متنوعة في العلوم الشرعية.</p>
+          </a>
+
+          <a href="cards.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-images"></i>
+            </div>
+            <h3>البطاقات الدعوية</h3>
+            <p>بطاقات إسلامية بتصاميم رائعة للمشاركة والنشر.</p>
+          </a>
+
+          <a href="qibla.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-compass"></i>
+            </div>
+            <h3>اتجاه القبلة</h3>
+            <p>تحديد اتجاه القبلة بدقة من أي مكان في العالم.</p>
+          </a>
+
+          <a href="zakat.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-coins"></i>
+            </div>
+            <h3>حاسبة الزكاة</h3>
+            <p>أداة دقيقة لحساب زكاة المال والذهب والفضة.</p>
+          </a>
+
+          <a href="names.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-hand-holding-heart"></i>
+            </div>
+            <h3>أسماء الله الحسنى</h3>
+            <p>التعرف على معاني أسماء الله الحسنى وفضائلها.</p>
+          </a>
+
+          <a href="prayer-tracker.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+            <h3>متتبع الصلوات</h3>
+            <p>جدول لمتابعة أداء الصلوات في وقتها والسنن الرواتب.</p>
+          </a>
+
+          <a href="khatma.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-bookmark"></i>
+            </div>
+            <h3>متابعة الختمة</h3>
+            <p>تحديد الورد اليومي ومتابعة ختم القرآن الكريم.</p>
+          </a>
+
+          <a href="hajj.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-kaaba"></i>
+            </div>
+            <h3>دليل الحج والعمرة</h3>
+            <p>خطوات مناسك الحج والعمرة مدعومة بالصور والأدعية.</p>
+          </a>
+
+          <a href="live.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-satellite-dish"></i>
+            </div>
+            <h3>مباشر الحرمين</h3>
+            <p>بث مباشر من المسجد الحرام والمسجد النبوي الشريف.</p>
+          </a>
+
+          <a href="kids.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-child-reaching"></i>
+            </div>
+            <h3>ركن الأطفال</h3>
+            <p>محتوى إسلامي ممتع ومفيد ومسابقات شيقة للأطفال.</p>
+          </a>
+
+          <a href="stories.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-book-medical"></i>
+            </div>
+            <h3>قصص الأنبياء</h3>
+            <p>قصص الأنبياء مصورة ومقروءة للاعتبار والتعلم.</p>
+          </a>
+
+          <a href="coloring.html" class="service-card extra-card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-palette"></i>
+            </div>
+            <h3>لوحة التلوين</h3>
+            <p>تلوين مساجد وبطاقات إسلامية لتنمية مهارات الأطفال.</p>
+          </a>
+
+          <!-- See More Button -->
+          <div class="see-more-container">
+            <button id="see-more-btn" class="btn btn-primary">
+              <i class="fa-solid fa-chevron-down"></i> عرض المزيد
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <p>
+            موقع إسلامي شامل يهدف لخدمة المسلمين في شتى بقاع الأرض وتوفير
+            المصادر الموثوقة للتفقه في الدين.
+          </p>
+        </div>
+        <div class="footer-links">
+          <h3>روابط سريعة</h3>
+          <ul>
+            <li><a href="quran.html">القرآن الكريم</a></li>
+            <li><a href="hadith.html">الحديث النبوي</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h3>أدوات</h3>
+          <ul>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h3>تابعنا</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          جميع الحقوق محفوظة &copy; <span id="current-year"></span> سراج
+          الإسلامية.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Daily Message Popup -->
+    <div id="daily-popup" class="modal-overlay">
+      <div class="modal-content glass-panel">
+        <button id="close-popup" class="close-btn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="popup-header">
+          <i class="fa-solid fa-envelope-open-text popup-icon"></i>
+          <h3>رسالة اليوم</h3>
+        </div>
+        <p id="daily-popup-text">جاري تحميل الرسالة...</p>
+        <button id="share-popup" class="btn btn-primary">
+          <i class="fa-solid fa-share-nodes"></i> شارك
+        </button>
+      </div>
+    </div>
+
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+  </body>
+</html>

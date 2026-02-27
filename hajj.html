@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <title>دليل الحج والعمرة | سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .hajj-container {
+        max-width: 900px;
+        margin: -40px auto 60px;
+        position: relative;
+        z-index: 10;
+      }
+      .guide-card {
+        background: var(--bg-secondary);
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+      }
+      .guide-tabs {
+        display: flex;
+        background: var(--primary-light);
+        border-bottom: 2px solid var(--border-color);
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 20px;
+        text-align: center;
+        background: none;
+        border: none;
+        font-family: var(--font-cairo);
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .tab-btn.active {
+        color: var(--primary-color);
+        border-bottom: 3px solid var(--accent-gold);
+        background: var(--bg-secondary);
+      }
+      .tab-btn i {
+        margin-left: 8px;
+      }
+
+      .guide-content {
+        padding: 40px;
+        display: none;
+      }
+      .guide-content.active {
+        display: block;
+        animation: fadeIn 0.5s;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .step-item {
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+        border-bottom: 1px dashed var(--border-color);
+        position: relative;
+      }
+      .step-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .step-number {
+        position: absolute;
+        right: -60px;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: var(--font-cairo);
+        font-weight: bold;
+        font-size: 1.2rem;
+        border: 3px solid var(--bg-secondary);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .step-title {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .step-desc {
+        color: var(--text-main);
+        line-height: 1.8;
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+      }
+
+      .dua-box {
+        background: var(--primary-light);
+        padding: 20px;
+        border-radius: 10px;
+        border-right: 4px solid var(--accent-gold);
+      }
+      .dua-arabic {
+        font-family: var(--font-amiri);
+        font-size: 1.5rem;
+        color: var(--primary-dark);
+        line-height: 2;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .dua-translation {
+        color: var(--text-muted);
+        text-align: center;
+        font-size: 0.95rem;
+      }
+
+      /* Tracker Feature */
+      .step-check {
+        position: absolute;
+        left: 0;
+        top: 5px;
+      }
+      .step-check input[type="checkbox"] {
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+        accent-color: var(--primary-color);
+      }
+      .completed .step-title {
+        text-decoration: line-through;
+        opacity: 0.6;
+      }
+      .completed .step-desc {
+        opacity: 0.6;
+      }
+
+      @media (max-width: 768px) {
+        .guide-content {
+          padding: 40px 20px 40px 60px;
+        }
+        .step-number {
+          right: -50px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html" class="active">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <header class="page-hero">
+      <div class="container">
+        <h1 class="fade-in-up">دليل الحج والعمرة</h1>
+        <p class="fade-in-up delay-1">
+          دليل تفاعلي يرافقك خطوة بخطوة في أداء مناسكك مع الأدعية המأثورة.
+        </p>
+      </div>
+    </header>
+
+    <section class="section-padding">
+      <div class="container hajj-container">
+        <div class="guide-card reveal active">
+          <div class="guide-tabs">
+            <button class="tab-btn active" data-target="umrah">
+              <i class="fa-solid fa-kaaba"></i> مناسك العمرة
+            </button>
+            <button class="tab-btn" data-target="hajj">
+              <i class="fa-solid fa-tents"></i> مناسك الحج
+            </button>
+          </div>
+
+          <!-- Umrah Content -->
+          <div id="umrah" class="guide-content active">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-check">
+                <input type="checkbox" onchange="toggleStep(this)" />
+              </div>
+              <h3 class="step-title">
+                <i class="fa-solid fa-person-praying"></i> الإحرام
+              </h3>
+              <p class="step-desc">
+                اغتسل وتطيب (للرجال) والبس ثياب الإحرام، ثم انوِ العمرة وقل وقت
+                الإحرام عند الميقات:
+              </p>
+              <div class="dua-box">
+                <div class="dua-arabic">"لَبَّيْكَ اللَّهُمَّ عُمْرَةً"</div>
+                <div
+                  class="dua-arabic"
+                  style="font-size: 1.2rem; margin-top: 15px"
+                >
+                  "لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لا شَرِيكَ لَكَ
+                  لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لا
+                  شَرِيكَ لَكَ"
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-check">
+                <input type="checkbox" onchange="toggleStep(this)" />
+              </div>
+              <h3 class="step-title">
+                <i class="fa-solid fa-kaaba"></i> الطواف
+              </h3>
+              <p class="step-desc">
+                عند الوصول للمسجد الحرام، ابدأ الطواف من الحجر الأسود واجعله على
+                يسارك. طُف 7 أشواط تنتهي عند الحجر الأسود. يُسن الرمل (الإسراع)
+                والاضطباع (كشف الكتف الأيمن) للرجال في الأشواط الثلاثة الأولى.
+                <br />الدعاء بين الركن اليماني والحجر الأسود:
+              </p>
+              <div class="dua-box">
+                <div class="dua-arabic">
+                  "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ
+                  حَسَنَةً وَقِنَا عَذَابَ النَّارِ"
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-check">
+                <input type="checkbox" onchange="toggleStep(this)" />
+              </div>
+              <h3 class="step-title">
+                <i class="fa-solid fa-shoe-prints"></i> ركعتي الطواف
+              </h3>
+              <p class="step-desc">
+                بعد الانتهاء من الطواف، توجه خلف مقام إبراهيم (إن تيسر) وصلِّ
+                ركعتين خفيفتين. اقرأ في الأولى سورة الكافرون وفي الثانية سورة
+                الإخلاص. ثم اشرب من ماء زمزم وتضلع منه وادعُ بما شئت.
+              </p>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-check">
+                <input type="checkbox" onchange="toggleStep(this)" />
+              </div>
+              <h3 class="step-title">
+                <i class="fa-solid fa-mountain"></i> السعي بين الصفا والمروة
+              </h3>
+              <p class="step-desc">
+                توجه إلى الصفا وابدأ السعي منه إلى المروة (هذا شوط). ثم من
+                المروة إلى الصفا (هذا شوط ثاني). كرر حتى تنهي 7 أشواط تنتهي عند
+                المروة.
+                <br />عند الصعود على الصفا والمروة قل:
+              </p>
+              <div class="dua-box">
+                <div class="dua-arabic">
+                  "إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ... اللَّهُ
+                  أَكْبَرُ، اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، لاَ إِلَهَ
+                  إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ
+                  وَلَهُ الْحَمْدُ، يُحْيِي وَيُمِيتُ وَهُوَ عَلَى كُلِّ شَيْءٍ
+                  قَدِيرٌ..."
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">5</div>
+              <div class="step-check">
+                <input type="checkbox" onchange="toggleStep(this)" />
+              </div>
+              <h3 class="step-title">
+                <i class="fa-solid fa-scissors"></i> الحلق أو التقصير
+              </h3>
+              <p class="step-desc">
+                بعد الانتهاء من السعي، يحلق الرجل رأسه أو يقصره (والحلق أفضل).
+                أما المرأة فتقص من أطراف شعرها قدر أنملة (بحجم طرف الأصبع).
+                <br /><strong
+                  >بهذا تمت العمرة وحلّ لك ما حُرم عليك بالإحرام.</strong
+                >
+              </p>
+            </div>
+          </div>
+
+          <!-- Hajj Content -->
+          <div id="hajj" class="guide-content">
+            <div style="text-align: center; padding: 40px">
+              <i
+                class="fa-solid fa-tents"
+                style="
+                  font-size: 4rem;
+                  color: var(--accent-gold);
+                  margin-bottom: 20px;
+                "
+              ></i>
+              <h3 style="color: var(--primary-color)">
+                مناسك الحج قيد التجهيز
+              </h3>
+              <p style="color: var(--text-muted)">
+                سيتم إضافة الدليل الشامل لمناسك الحج قريباً إن شاء الله
+                (التروية، عرفة، مزدلفة، رمي الجمرات، وطواف الإفاضة).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"
+            ><i class="fa-solid fa-moon"></i> سراج</a
+          >
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          جميع الحقوق محفوظة &copy; <span id="current-year"></span> سراج
+          الإسلامية.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+      const tabBtns = document.querySelectorAll(".tab-btn");
+      const contents = document.querySelectorAll(".guide-content");
+
+      tabBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tabBtns.forEach((b) => b.classList.remove("active"));
+          contents.forEach((c) => c.classList.remove("active"));
+
+          btn.classList.add("active");
+          document.getElementById(btn.dataset.target).classList.add("active");
+        });
+      });
+
+      function toggleStep(checkbox) {
+        const stepItem = checkbox.closest(".step-item");
+        if (checkbox.checked) {
+          stepItem.classList.add("completed");
+        } else {
+          stepItem.classList.remove("completed");
+        }
+      }
+    </script>
+  </body>
+</html>

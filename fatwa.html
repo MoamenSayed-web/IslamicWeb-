@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <title>الفتاوى والأسئلة الشائعة - سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .fatwa-hero {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary),
+          var(--bg-main)
+        );
+        border-bottom: 1px solid var(--border-color);
+      }
+      .fatwa-hero h1 {
+        font-family: var(--font-cairo);
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+      }
+      .fatwa-hero p {
+        font-family: var(--font-tajawal);
+        font-size: 1.2rem;
+        color: var(--text-muted);
+      }
+
+      .accordion-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      .accordion-item {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        transition: all 0.3s;
+      }
+
+      .accordion-header {
+        padding: 20px 25px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--font-cairo);
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--text-main);
+        background: var(--bg-color);
+        border-bottom: 1px solid transparent;
+        transition: all 0.3s;
+      }
+      .accordion-header:hover {
+        background: var(--bg-secondary);
+      }
+      .accordion-header.active {
+        border-bottom: 1px solid var(--border-color);
+        color: var(--primary-color);
+      }
+      .accordion-header i {
+        transition: transform 0.3s;
+        color: var(--text-muted);
+      }
+      .accordion-header.active i {
+        transform: rotate(180deg);
+        color: var(--primary-color);
+      }
+
+      .accordion-body {
+        padding: 0 25px;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.4s ease-out,
+          padding 0.4s ease;
+        background: var(--bg-secondary);
+        font-family: var(--font-tajawal);
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-main);
+      }
+      .accordion-body.active {
+        padding: 20px 25px;
+        max-height: 1000px; /* arbitrary large value */
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-color);
+        color: var(--text-main);
+        font-family: var(--font-tajawal);
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        outline: none;
+      }
+      .search-input:focus {
+        border-color: var(--primary-color);
+      }
+
+      .category-filter {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+      .cat-btn {
+        padding: 8px 15px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-secondary);
+        cursor: pointer;
+        font-family: var(--font-tajawal);
+        font-weight: bold;
+        color: var(--text-main);
+        transition: all 0.3s;
+      }
+      .cat-btn.active,
+      .cat-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+    </style>
+  </head>
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html" class="active">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <header class="fatwa-hero">
+      <div class="container fade-in-up">
+        <h1>سؤال وجواب (الفتاوى)</h1>
+        <p>إجابات مبسطة وموثوقة لأكثر الأسئلة شيوعاً في العبادات والمعاملات</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="accordion-container fade-in-up delay-1">
+        <input
+          type="text"
+          id="fatwa-search"
+          class="search-input"
+          placeholder="ابحث في الأسئلة (مثال: الوضوء، الصلاة، الصيام)..."
+        />
+
+        <div class="category-filter">
+          <button class="cat-btn active" onclick="filterCategory('الكل')">
+            الكل
+          </button>
+          <button class="cat-btn" onclick="filterCategory('الطهارة')">
+            الطهارة
+          </button>
+          <button class="cat-btn" onclick="filterCategory('الصلاة')">
+            الصلاة
+          </button>
+          <button class="cat-btn" onclick="filterCategory('الصيام')">
+            الصيام
+          </button>
+        </div>
+
+        <div id="fatwas-list">
+          <!-- Fatwa Items -->
+        </div>
+      </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+      const fatwasData = [
+        {
+          category: "الطهارة",
+          question: "هل النوم ينقض الوضوء؟",
+          answer:
+            "النوم المستغرق الذي لا يشعر فيه الإنسان بمن حوله ينقض الوضوء، أما النعاس الخفيف أو النوم جالساً مع تمكن المقعدة من الأرض فلا ينقض الوضوء.",
+        },
+        {
+          category: "الطهارة",
+          question: "الشك في خروج الريح أثناء الصلاة، ماذا أفعل؟",
+          answer:
+            "القاعدة الفقهية تقول: (اليقين لا يزول بالشك)، فلا تخرج من صلاتك إلا إذا تيقنت، لقول النبي ﷺ: (لا ينصرف حتى يسمع صوتاً أو يجد ريحاً).",
+        },
+        {
+          category: "الصلاة",
+          question: "ما حكم من نسي سجدة أو ركوعاً في صلاته؟",
+          answer:
+            "من نسي ركناً كالسجود وتذكره قبل أن يصل إلى مكانه في الركعة التالية، يعود ليأتي به. وإن تذكره بعد وصوله لمكانه في الركعة التالية، تلغى الركعة الناقصة وتقوم الركعة التالية مقامها، ويسجد للسهو في النهاية.",
+        },
+        {
+          category: "الصلاة",
+          question: "كيف أقضي الصلاة الفائتة إذا نمت عنها؟",
+          answer:
+            "يجب قضاء الصلاة فور الاستيقاظ وتذكرها، لقوله ﷺ: (من نسي صلاة أو نام عنها فكفارتها أن يصليها إذا ذكرها لا كفارة لها إلا ذلك).",
+        },
+        {
+          category: "الصيام",
+          question: "هل قطرة العين أو الأذن تفطر الصائم؟",
+          answer:
+            "قطرة العين لا تفطر وفقاً لمعظم العلماء المعاصرين ومجامع الفقه. أما قطرة الأذن فلا تفطر أيضاً إلا إذا كانت طبلة الأذن مثقوبة بحيث تصل للمعدة.",
+        },
+        {
+          category: "الصيام",
+          question: "من أكل أو شرب ناسياً وهو صائم؟",
+          answer:
+            "صيامه صحيح ولا شيء عليه، ويتم صومه، لقوله ﷺ: (من نسي وهو صائم فأكل أو شرب فليتم صومه، فإنما أطعمه الله وسقاه).",
+        },
+      ];
+
+      const fatwasListEl = document.getElementById("fatwas-list");
+      let currentFatwas = fatwasData;
+
+      function renderFatwas(data) {
+        fatwasListEl.innerHTML = "";
+        if (data.length === 0) {
+          fatwasListEl.innerHTML =
+            "<p style='text-align:center;'>لا توجد نتائج مطابقة لبحثك.</p>";
+          return;
+        }
+
+        data.forEach((item, index) => {
+          const div = document.createElement("div");
+          div.className = "accordion-item";
+          div.innerHTML = `
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>${item.question} <small style="color:var(--text-muted); font-size:0.8rem; margin-right:10px;">(${item.category})</small></span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="accordion-body">
+            <p>${item.answer}</p>
+          </div>
+        `;
+          fatwasListEl.appendChild(div);
+        });
+      }
+
+      function toggleAccordion(header) {
+        const parent = header.parentElement;
+        const body = parent.querySelector(".accordion-body");
+
+        // close all others
+        document.querySelectorAll(".accordion-header").forEach((el) => {
+          if (el !== header) el.classList.remove("active");
+        });
+        document.querySelectorAll(".accordion-body").forEach((el) => {
+          if (el !== body) el.classList.remove("active");
+        });
+
+        // toggle current
+        header.classList.toggle("active");
+        body.classList.toggle("active");
+      }
+
+      function filterCategory(cat) {
+        document
+          .querySelectorAll(".cat-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        if (cat === "الكل") {
+          currentFatwas = fatwasData;
+        } else {
+          currentFatwas = fatwasData.filter((f) => f.category === cat);
+        }
+
+        // re-apply search if exists
+        const term = document
+          .getElementById("fatwa-search")
+          .value.toLowerCase();
+        const filtered = currentFatwas.filter(
+          (f) => f.question.includes(term) || f.answer.includes(term),
+        );
+        renderFatwas(filtered);
+      }
+
+      document.getElementById("fatwa-search").addEventListener("input", (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = currentFatwas.filter(
+          (f) => f.question.includes(term) || f.answer.includes(term),
+        );
+        renderFatwas(filtered);
+      });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        renderFatwas(fatwasData);
+      });
+    </script>
+  </body>
+</html>

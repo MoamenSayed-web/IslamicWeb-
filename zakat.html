@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <title>حاسبة الزكاة | سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .zakat-container {
+        max-width: 800px;
+        margin: -40px auto 60px;
+        position: relative;
+        z-index: 10;
+      }
+      .calculator-card {
+        padding: 40px;
+        border-top: 5px solid var(--accent-gold);
+      }
+      .input-group {
+        margin-bottom: 25px;
+      }
+      .input-group label {
+        display: block;
+        font-family: var(--font-cairo);
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--primary-color);
+      }
+      .input-group input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        font-family: var(--font-tajawal);
+        font-size: 1.1rem;
+        background: var(--bg-color);
+        color: var(--text-main);
+        transition: border-color var(--transition-fast);
+      }
+      .input-group input:focus {
+        outline: none;
+        border-color: var(--accent-gold);
+      }
+      .gold-price-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--primary-light);
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(11, 112, 83, 0.2);
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      .gold-price-info i {
+        color: var(--accent-gold);
+        font-size: 1.5rem;
+        margin-left: 10px;
+      }
+      .price-value {
+        font-family: monospace;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--primary-dark);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .nisab-info {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+      .result-box {
+        background: var(--primary-color);
+        color: white;
+        text-align: center;
+        padding: 30px;
+        border-radius: 15px;
+        margin-top: 30px;
+        display: none;
+      }
+      .result-box.active {
+        display: block;
+        animation: fadeInUp 0.5s forwards;
+      }
+      .result-box h3 {
+        color: var(--accent-gold-light);
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+      }
+      .zakat-amount {
+        font-family: monospace;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        direction: ltr; /* Ensure numbers are displayed nicely */
+      }
+    </style>
+  </head>
+
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html" class="active">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <header class="page-hero">
+      <div class="container">
+        <h1 class="fade-in-up">حاسبة الزكاة</h1>
+        <p class="fade-in-up delay-1">
+          احسب زكاة مالك بدقة وسهولة. تُحسب الزكاة بنسبة ربع العشر (2.5%) إذا
+          بلغ المال النصاب وحال عليه الحول.
+        </p>
+      </div>
+    </header>
+
+    <!-- Calculator Section -->
+    <section class="section-padding">
+      <div class="container zakat-container">
+        <div class="service-card calculator-card reveal active">
+          <div class="gold-price-info">
+            <div>
+              <i class="fa-solid fa-scale-balanced"></i>
+              <strong>سعر جرام الذهب عيار 24 اليوم:</strong>
+            </div>
+            <div class="price-value">
+              <input
+                type="number"
+                id="gold-price"
+                value="3800"
+                style="
+                  width: 100px;
+                  text-align: center;
+                  padding: 5px;
+                  border-radius: 5px;
+                  border: 1px solid var(--border-color);
+                  background: var(--bg-secondary);
+                  color: var(--text-main);
+                "
+              />
+              <span>عملة محلية</span>
+            </div>
+          </div>
+
+          <div class="nisab-info">
+            <p>
+              النصاب = 85 جرام من الذهب عيار 24 (<span id="nisab-value"
+                >323,000</span
+              >)
+            </p>
+          </div>
+
+          <form id="zakat-form">
+            <div class="input-group">
+              <label for="money-amount">المبلغ المدخر (النقدي والبنكي):</label>
+              <input
+                type="number"
+                id="money-amount"
+                placeholder="أدخل المبلغ..."
+                required
+                min="0"
+                step="any"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="trade-amount">قيمة عروض التجارة (إن وجدت):</label>
+              <input
+                type="number"
+                id="trade-amount"
+                placeholder="أدخل القيمة..."
+                value="0"
+                min="0"
+                step="any"
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              style="
+                width: 100%;
+                border-radius: 10px;
+                padding: 15px;
+                font-size: 1.2rem;
+              "
+            >
+              احسب الزكاة
+              <i class="fa-solid fa-calculator" style="margin-right: 10px"></i>
+            </button>
+          </form>
+
+          <div id="result-box" class="result-box">
+            <h3>مقدار الزكاة الواجب إخراجها</h3>
+            <div class="zakat-amount" id="zakat-amount-text">0.00</div>
+            <p id="zakat-status-msg">المال بلغ النصاب ووجبت فيه الزكاة.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"
+            ><i class="fa-solid fa-moon"></i> سراج</a
+          >
+          <p>موقع إسلامي شامل يهدف لخدمة المسلمين في شتى بقاع الأرض.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          جميع الحقوق محفوظة &copy; <span id="current-year"></span> سراج
+          الإسلامية.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const goldPriceInput = document.getElementById("gold-price");
+        const nisabValueSpan = document.getElementById("nisab-value");
+        const zakatForm = document.getElementById("zakat-form");
+        const resultBox = document.getElementById("result-box");
+        const zakatAmountText = document.getElementById("zakat-amount-text");
+        const zakatStatusMsg = document.getElementById("zakat-status-msg");
+
+        function updateNisab() {
+          const goldPrice = parseFloat(goldPriceInput.value) || 0;
+          const nisab = goldPrice * 85;
+          nisabValueSpan.textContent =
+            nisab.toLocaleString(
+              "en-US",
+            ); /* Using en-US for better number formatting visually */
+          return nisab;
+        }
+
+        goldPriceInput.addEventListener("input", updateNisab);
+
+        zakatForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const nisab = updateNisab();
+          const money =
+            parseFloat(document.getElementById("money-amount").value) || 0;
+          const trade =
+            parseFloat(document.getElementById("trade-amount").value) || 0;
+          const totalWealth = money + trade;
+
+          resultBox.classList.add("active");
+
+          if (totalWealth >= nisab) {
+            const zakat = totalWealth * 0.025;
+            zakatAmountText.textContent = zakat.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
+            zakatStatusMsg.textContent =
+              "المال بلغ النصاب ووجبت فيه الزكاة (2.5%).";
+            resultBox.style.backgroundColor = "var(--primary-color)";
+          } else {
+            zakatAmountText.textContent = "0.00";
+            zakatStatusMsg.textContent =
+              "المال لم يبلغ النصاب (أقل من ثمن 85 جرام ذهب 24).";
+            resultBox.style.backgroundColor = "var(--text-muted)";
+          }
+        });
+
+        updateNisab();
+      });
+    </script>
+  </body>
+</html>

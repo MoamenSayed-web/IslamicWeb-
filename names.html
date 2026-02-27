@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <title>أسماء الله الحسنى | سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .names-container {
+        max-width: 1200px;
+        margin: -40px auto 60px;
+        position: relative;
+        z-index: 10;
+      }
+      .names-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+      }
+      .name-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: 20px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+      }
+      .name-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--accent-gold);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+      .name-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(11, 112, 83, 0.15);
+        border-color: var(--primary-color);
+      }
+      .name-card:hover::before {
+        transform: scaleX(1);
+      }
+      .name-ar {
+        font-family: var(--font-amiri);
+        font-size: 2rem;
+        color: var(--primary-color);
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .name-num {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        opacity: 0.5;
+      }
+
+      /* Modal styling for details */
+      .name-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+      .name-modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .name-modal-content {
+        background: var(--bg-secondary);
+        padding: 40px;
+        border-radius: 20px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        position: relative;
+        transform: scale(0.9);
+        transition: all 0.3s ease;
+      }
+      .name-modal.active .name-modal-content {
+        transform: scale(1);
+      }
+      .close-name-modal {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+      .modal-name-ar {
+        font-family: var(--font-amiri);
+        font-size: 3.5rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .modal-name-meaning {
+        font-family: var(--font-tajawal);
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: var(--text-main);
+      }
+      #search-names {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px 20px;
+        border-radius: 30px;
+        border: 2px solid var(--border-color);
+        margin-bottom: 40px;
+        font-family: var(--font-tajawal);
+        font-size: 1.1rem;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        background: var(--bg-secondary);
+        color: var(--text-main);
+      }
+      #search-names:focus {
+        outline: none;
+        border-color: var(--accent-gold);
+      }
+    </style>
+  </head>
+
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html" class="active">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <header class="page-hero">
+      <div class="container">
+        <h1 class="fade-in-up">أسماء الله الحسنى</h1>
+        <p class="fade-in-up delay-1">
+          قال رسول الله ﷺ: "إن لله تسعة وتسعين اسماً مائة إلا واحداً من أحصاها
+          دخل الجنة"
+        </p>
+      </div>
+    </header>
+
+    <!-- Names Section -->
+    <section class="section-padding" style="padding-top: 20px">
+      <div class="container names-container reveal active">
+        <input
+          type="text"
+          id="search-names"
+          placeholder="ابحث في أسماء الله الحسنى..."
+        />
+
+        <div class="names-grid" id="names-grid">
+          <!-- Names will be injected here via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Name Details Modal -->
+    <div class="name-modal" id="name-modal">
+      <div class="name-modal-content">
+        <button class="close-name-modal" id="close-name-modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="modal-name-ar" id="modal-name-ar"></div>
+        <div class="modal-name-meaning" id="modal-name-meaning"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"
+            ><i class="fa-solid fa-moon"></i> سراج</a
+          >
+          <p>موقع إسلامي شامل يهدف لخدمة المسلمين في شتى بقاع الأرض.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          جميع الحقوق محفوظة &copy; <span id="current-year"></span> سراج
+          الإسلامية.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+    <script>
+      // Simplified mock data for 99 Names (you can expand this or fetch from an API)
+      const allahNames = [
+        { name: "الرَّحْمَنُ", meaning: "كثير الرحمة بجميع خلقه في الدنيا والآخرة." },
+        { name: "الرَّحِيمُ", meaning: "الذي يرحم المؤمنين يوم القيامة." },
+        { name: "الْمَلِكُ", meaning: "صاحب الملك الذي لا يزول والاقتدار التام." },
+        { name: "الْقُدُّوسُ", meaning: "المنزه عن كل نقص وعيب." },
+        { name: "السَّلَامُ", meaning: "الذي سلم من كل عيب ونقص." },
+        { name: "الْمُؤْمِنُ", meaning: "الذي أمّن خلقه من ظلمه، والذي صدّق رسله." },
+        { name: "الْمُهَيْمِنُ", meaning: "الرقيب على كل شيء، الحافظ له." },
+        { name: "الْعَزِيزُ", meaning: "الغالب الذي لا يغلب، والقوي الذي لا يذل." },
+        { name: "الْجَبَّارُ", meaning: "الذي يجبر قلوب المنكسرين، والذي يقهر الجبابرة." },
+        { name: "الْمُتَكَبِّرُ", meaning: "المتعالي عن صفات الخلق." },
+        { name: "الْخَالِقُ", meaning: "المبدع للأشياء من العدم." },
+        { name: "الْبَارِئُ", meaning: "الذي خلق الخلق بريئاً من التفاوت والتناقض." },
+        { name: "الْمُصَوِّرُ", meaning: "الذي يعطي كل شيء صورته الخاصة." },
+        { name: "الْغَفَّارُ", meaning: "الكثير المغفرة لذنوب عباده." },
+        { name: "الْقَهَّارُ", meaning: "الغالب على كل شيء والمذلل لكل مارد." },
+        { name: "الْوَهَّابُ", meaning: "الذي يجود بالعطاء الكثير بلا عوض." },
+        { name: "الرَّزَّاقُ", meaning: "خالق الأرزاق والمتكفل بإيصالها لخلقه." },
+        { name: "الْفَتَّاحُ", meaning: "الذي يفتح أبواب الخير والرحمة." },
+        { name: "الْعَلِيمُ", meaning: "المحيط علمه بكل شيء." },
+        { name: "الْقَابِضُ", meaning: "الذي يقبض الأرواح والأرزاق بحكمته." },
+        { name: "الْبَاسِطُ", meaning: "الذي يوسع الأرزاق لمن يشاء." },
+        { name: "الْخَافِضُ", meaning: "الذي يخفض الكفار والأشرار." },
+        { name: "الرَّافِعُ", meaning: "الذي يرفع المؤمنين والمتقين." },
+        { name: "الْمُعِزُّ", meaning: "الذي يهب العزة لمن يشاء." },
+        { name: "الْمُذِلُّ", meaning: "الذي يذل من يشاء بحكمته." },
+        { name: "السَّمِيعُ", meaning: "الذي يسمع كل شيء، السر والنجوى." },
+        { name: "الْبَصِيرُ", meaning: "الذي يبصر كل شيء، الخفي والظاهر." },
+        { name: "الْحَكَمُ", meaning: "الذي يفصل بين الحق والباطل، ولا راد لقضائه." },
+        { name: "الْعَدْلُ", meaning: "الذي لا يجور في حكمه مطلقا." },
+        { name: "اللَّطِيفُ", meaning: "العليم بدقائق الأمور، الموصل للبر برفق." },
+        { name: "الْخَبِيرُ", meaning: "العليم ببواطن الأمور وخفاياها." },
+        { name: "الْحَلِيمُ", meaning: "الذي لا يعجل بالعقوبة بل يمهل ويعفو." },
+        { name: "الْعَظِيمُ", meaning: "الذي لا يحيط العقل بكنهه وجلاله." },
+        { name: "الْغَفُورُ", meaning: "الذي يستر الذنوب ويتجاوز عن الزلات." },
+        { name: "الشَّكُورُ", meaning: "الذي يجازي على العمل القليل بالثواب الكثير." },
+        { name: "الْعَلِيُّ", meaning: "رفيع القدر والشأن." },
+        { name: "الْكَبِيرُ", meaning: "العظيم في ذاته وصفاته." },
+        { name: "الْحَفِيظُ", meaning: "الذي يحفظ السماوات والأرض وما فيهما." },
+        { name: "الْمُقِيتُ", meaning: "خالق الأقوات وموصلها، والمقتدر على كل شيء." },
+        { name: "الْحَسِيبُ", meaning: "الكافي لعباده في مهامهم وحاجاتهم." },
+        { name: "الْجَلِيلُ", meaning: "صاحب الجلال والكمال." },
+        { name: "الْكَرِيمُ", meaning: "الكثير العطاء والصفح." },
+        { name: "الرَّقِيبُ", meaning: "المطلع على كل شيء، الحافظ لأعمال العباد." },
+        { name: "الْمُجِيبُ", meaning: "الذي يجيب دعوة الداعي إذا دعاه." },
+        { name: "الْوَاسِعُ", meaning: "الذي وسع رزقه ورحمته كل شيء." },
+        { name: "الْحَكِيمُ", meaning: "الذي يضع الأشياء في مواضعها الصحيحة." },
+        { name: "الْوَدُودُ", meaning: "المحب لعباده الصالحين، والمحبوب عندهم." },
+        { name: "الْمَجِيدُ", meaning: "البالغ النهاية في المجد والكرم والفضل." },
+        { name: "الْبَاعِثُ", meaning: "محيي الموتى، وباعث الرسل." },
+        { name: "الشَّهِيدُ", meaning: "المطلع على كل شيء، فلا يغيب عنه شيء." },
+        { name: "الْحَقُّ", meaning: "الموجود حقاً، الذي لا شك فيه." },
+        { name: "الْوَكِيلُ", meaning: "المتكفل بأمور الخلائق والموكول إليه أمورهم." },
+        { name: "الْقَوِيُّ", meaning: "تام القوة الذي لا يغلبه غالب." },
+        { name: "الْمَتِينُ", meaning: "الشديد القوة الذي لا تلحقه مشقة." },
+        { name: "الْوَلِيُّ", meaning: "الناصر لأوليائه والمتولي أمور خلقه." },
+        { name: "الْحَمِيدُ", المستحق للحمد والثناء." },
+        { name: "الْمُحْصِي", meaning: "الذي أحصى كل شيء عدداً وعلماً." },
+        { name: "الْمُبْدِئُ", meaning: "الذي أوجد الأشياء من العدم." },
+        { name: "الْمُعِيدُ", meaning: "الذي يعيد الخلائق بعد موتهم." },
+        { name: "الْمُحْيِي", meaning: "خالق الحياة ومحيي الموتى." },
+        { name: "الْمُمِيتُ", meaning: "مقدر الموت على الخلائق." },
+        { name: "الْحَيُّ", meaning: "الباقي الذي لا يموت." },
+        { name: "الْقَيُّومُ", meaning: "القائم بنفسه، والمقيم لجميع خلقه." },
+        { name: "الْوَاجِدُ", meaning: "الغني الذي لا يفتقر لشيء." },
+        { name: "الْمَاجِدُ", meaning: "الكثير الخير والفضل والمجد." },
+        { name: "الْوَاحِدُ", meaning: "المتفرد في ذاته وصفاته وأفعاله." },
+        { name: "الْأَحَدُ", meaning: "المنفرد الذي لا شبيه له ولا نظير." },
+        { name: "الصَّمَدُ", meaning: "الذي يقصده الخلائق في حاجاتهم." },
+        { name: "الْقَادِرُ", meaning: "الذي يفعل ما يشاء." },
+        { name: "الْمُقْتَدِرُ", meaning: "تام القدرة على كل شيء." },
+        { name: "الْمُقَدِّمُ", meaning: "الذي يقدم من يشاء بحكمته." },
+        { name: "الْمُؤَخِّرُ", meaning: "الذي يؤخر من يشاء بحكمته." },
+        { name: "الْأَوَّلُ", meaning: "الذي ليس قبله شيء." },
+        { name: "الْآخِرُ", meaning: "الذي ليس بعده شيء." },
+        { name: "الظَّاهِرُ", meaning: "الذي ليس فوقه شيء، المتجلي بآياته." },
+        { name: "الْبَاطِنُ", meaning: "الذي ليس دونه شيء، المحتجب عن الأبصار." },
+        { name: "الْوَالِي", meaning: "المتصرف في الأشياء بالتدبير والمشيئة." },
+        { name: "الْمُتَعَالِي", meaning: "جل عن صفات المخلوقين وتنزّه عنها." },
+        { name: "الْبَرُّ", meaning: "الكثير الخير والإحسان لمن يشاء." },
+        { name: "التَّوَّابُ", meaning: "الذي يقبل توبة التائبين المذنبين." },
+        { name: "الْمُنْتَقِمُ", meaning: "الذي يعاقب المتمردين والعصاة." },
+        { name: "الْعَفُوُّ", meaning: "الذي يترك المؤاخذة على الذنوب." },
+        { name: "الرَّؤُوفُ", meaning: "الشديد الرحمة والرأفة بعباده." },
+        { name: "مَالِكُ الْمُلْكِ", meaning: "المتصرف في ملكه كيف يشاء." },
+        { name: "ذُو الْجَلَالِ وَالْإِكْرَامِ", meaning: "المستحق للتعظيم والإكرام." },
+        { name: "الْمُقْسِطُ", meaning: "العادل في حكمه وفعله." },
+        { name: "الْجَامِعُ", meaning: "الذي يجمع الخلائق يوم الحساب." },
+        { name: "الْغَنِيُّ", meaning: "المستغني عن كل شيء سواه." },
+        { name: "الْمُغْنِي", meaning: "الذي يغني من يشاء من عباده." },
+        { name: "الْمَانِعُ", meaning: "الذي يمنع البلاء عن أوليائه، ويمنع العطاء عمن يشاء." },
+        { name: "الضَّارُّ", meaning: "الذي ينزل الضر على من يشاء بحكمته." },
+        { name: "النَّافِعُ", meaning: "الذي ينزل النفع على من يشاء بحكمته." },
+        { name: "النُّورُ", meaning: "الذي بنوره تستنير السماوات والأرض، والهادي." },
+        { name: "الْهَادِي", meaning: "الذي يهدي القلوب للحق." },
+        { name: "الْبَدِيعُ", meaning: "الذي خلق الأشياء بلا مثال سابق." },
+        { name: "الْبَاقِي", meaning: "الدائم الذي لا يفنى ولا يزول." },
+        { name: "الْوَارِثُ", meaning: "الذي ترجع إليه الأملاك بعد فناء الملاك." },
+        { name: "الرَّشِيدُ", meaning: "الذي يرشد خلقه لمصالحهم." },
+        { name: "الصَّبُورُ", meaning: "الذي لا يعاجل العصاة بالعقوبة." }
+      ];
+
+      const grid = document.getElementById("names-grid");
+      const searchInput = document.getElementById("search-names");
+
+      const modal = document.getElementById("name-modal");
+      const closeBtn = document.getElementById("close-name-modal");
+      const mNameAr = document.getElementById("modal-name-ar");
+      const mNameMean = document.getElementById("modal-name-meaning");
+
+      function renderNames(filter = "") {
+        grid.innerHTML = "";
+
+        const filtered = allahNames.filter(item =>
+          item.name.includes(filter) || item.meaning.includes(filter)
+        );
+
+        filtered.forEach((item, index) => {
+          const originalIndex = allahNames.indexOf(item) + 1;
+          const card = document.createElement("div");
+          card.className = "name-card";
+          card.innerHTML = `
+            <span class="name-num">${originalIndex}</span>
+            <div class="name-ar">${item.name}</div>
+          `;
+          card.addEventListener("click", () => {
+            mNameAr.textContent = item.name;
+            mNameMean.textContent = item.meaning;
+            modal.classList.add("active");
+          });
+          grid.appendChild(card);
+        });
+      }
+
+      closeBtn.addEventListener("click", () => modal.classList.remove("active"));
+      modal.addEventListener("click", (e) => {
+        if(e.target === modal) modal.classList.remove("active");
+      });
+
+      searchInput.addEventListener("input", (e) => renderNames(e.target.value));
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderNames();
+      });
+    </script>
+  </body>
+</html>

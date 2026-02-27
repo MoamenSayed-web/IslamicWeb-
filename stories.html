@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <title>قصص الأنبياء | سراج للأطفال</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Reem+Kufi:wght@400;600;700&family=Tajawal:wght@400;500;700&family=Marhey:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      body {
+        background-color: #f0fdf4;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234ade80' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+      [data-theme="dark"] body {
+        background-color: var(--bg-color);
+      }
+
+      .stories-header {
+        text-align: center;
+        padding: 100px 20px 40px;
+        background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        color: #fff;
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        margin-bottom: 50px;
+      }
+      [data-theme="dark"] .stories-header {
+        background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+      }
+
+      .stories-header h1 {
+        font-family: "Marhey", cursive; /* Fun font for kids */
+        font-size: 3.5rem;
+        margin-bottom: 15px;
+        color: white;
+        text-shadow:
+          2px 2px 0px #047857,
+          4px 4px 0px rgba(0, 0, 0, 0.1);
+      }
+
+      .stories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto 60px;
+        padding: 0 20px;
+      }
+
+      .story-card {
+        background: var(--bg-secondary);
+        border-radius: 25px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border: 4px solid #fff;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .story-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+      }
+      .story-card:nth-child(1)::before {
+        background: #f59e0b;
+      }
+      .story-card:nth-child(2)::before {
+        background: #3b82f6;
+      }
+      .story-card:nth-child(3)::before {
+        background: #10b981;
+      }
+      .story-card:nth-child(4)::before {
+        background: #ec4899;
+      }
+      .story-card:nth-child(5)::before {
+        background: #8b5cf6;
+      }
+      .story-card:nth-child(6)::before {
+        background: #14b8a6;
+      }
+
+      .story-card:hover {
+        transform: translateY(-15px) scale(1.02);
+      }
+
+      .story-icon {
+        width: 100px;
+        height: 100px;
+        background: var(--primary-light);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 20px;
+        font-size: 3rem;
+        color: var(--primary-color);
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+      }
+
+      .story-card h3 {
+        font-family: "Marhey", cursive;
+        font-size: 1.8rem;
+        color: var(--text-main);
+        margin-bottom: 10px;
+      }
+
+      /* Story Reader Modal */
+      .reader-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        z-index: 2000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s;
+      }
+      .reader-modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .reader-content {
+        background: var(--bg-color);
+        width: 90%;
+        max-width: 800px;
+        height: 85vh;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        transform: translateY(50px);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .reader-modal.active .reader-content {
+        transform: translateY(0);
+      }
+
+      .reader-header {
+        background: var(--primary-color);
+        color: white;
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .reader-header h2 {
+        font-family: "Marhey", cursive;
+        color: white;
+        margin: 0;
+      }
+      .close-reader {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .close-reader:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      .reader-body {
+        padding: 40px;
+        overflow-y: auto;
+        flex-grow: 1;
+        font-family: var(--font-cairo);
+        font-size: 1.4rem;
+        line-height: 2;
+        color: var(--text-main);
+        text-align: justify;
+      }
+      .reader-body p {
+        margin-bottom: 20px;
+      }
+      .reader-body .highlight {
+        color: var(--accent-gold);
+        font-weight: bold;
+        font-size: 1.6rem;
+      }
+
+      /* Fun decorative elements */
+      .deco-star {
+        position: absolute;
+        color: #ffd166;
+        animation: twinkle 2s infinite ease-in-out alternate;
+      }
+      @keyframes twinkle {
+        from {
+          opacity: 0.3;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html" class="active">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="stories-header">
+      <i
+        class="fa-solid fa-star deco-star"
+        style="top: 20%; left: 10%; font-size: 2rem"
+      ></i>
+      <i
+        class="fa-solid fa-star deco-star"
+        style="bottom: 20%; right: 15%; font-size: 1.5rem; animation-delay: 1s"
+      ></i>
+      <h1 class="fade-in-up">قصص الأنبياء مصورة</h1>
+      <p class="fade-in-up delay-1" style="font-size: 1.3rem">
+        اقرأ وتعلم من قصص أنبياء الله وأبطال الإسلام 📖✨
+      </p>
+    </div>
+
+    <div class="stories-grid reveal active" id="stories-grid">
+      <!-- Generated via JS -->
+    </div>
+
+    <!-- Reader Modal -->
+    <div class="reader-modal" id="reader-modal">
+      <div class="reader-content">
+        <div class="reader-header">
+          <h2 id="story-title-modal">عنوان القصة</h2>
+          <button class="close-reader" id="close-reader">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="reader-body" id="story-body-modal">
+          <!-- Content -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+      class="footer"
+      style="
+        background-color: var(--bg-secondary);
+        margin-top: 0;
+        border-top: none;
+      "
+    >
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"
+            ><i class="fa-solid fa-moon"></i> سراج</a
+          >
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          جميع الحقوق محفوظة &copy; <span id="current-year"></span> سراج
+          الإسلامية.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+      const stories = [
+        {
+          id: 1,
+          title: "قصة سيدنا آدم",
+          icon: "fa-leaf",
+          color: "#10b981",
+          content: `
+            <p><span class="highlight">في البداية</span> لم يكن هناك إنسان على الأرض.. فخلق الله تعالى سيدنا (آدم) عليه السلام من طين، ونفخ فيه من روحه فصار إنساناً جميلاً أحسن تقويم.</p>
+            <p>أمر الله الملائكة بالسجود لآدم (تحيةً وتكريماً)، فسجدوا جميعاً إلا <span class="highlight">إبليس</span> (الشيطان).. تكبر وعصى أمر الله لأنه مخلوق من نار وظن أنه أفضل من آدم.</p>
+            <p>أسكن الله آدم وزوجته (حواء) في الجنة الجميلة، وسمح لهما بالأكل من كل ثمارها اللذيذة ما عدا (شجرة واحدة). ولكن إبليس الشرير وسوس لهما فنسيا أمر الله وأكلا من الشجرة.</p>
+            <p>ندم آدم وحواء كثيراً واستغفرا الله، فغفر الله لهما وأنزلهما إلى الأرض ليعيشا فيها ويعمراها.. وهكذا بدأت حياة الإنسان على كوكب الأرض!</p>
+          `,
+        },
+        {
+          id: 2,
+          title: "سفينة نوح",
+          icon: "fa-ship",
+          color: "#3b82f6",
+          content: `
+            <p><span class="highlight">دعا سيدنا نوح</span> عليه السلام قومه لعبادة الله وحده مئات السنين! (950 سنة).. لكنهم كانوا يسخرون منه ولا يستمعون إليه.</p>
+            <p>أوحى الله لنوح أن يصنع (سفينة ضخمة) من الخشب. وكان قومه يضحكون منه لأنه يصنع سفينة على اليابسة بعيداً عن البحر!</p>
+            <p>لما انتهى نوح من صنع السفينة، أمره الله أن يأخذ معه عائلته والمؤمنين، ومن كل نوع من الحيوانات (زوجين اثنين.. ذكراً وأنثى).</p>
+            <p>وفجأة.. نزل مطر شديد من السماء وانفجرت الأرض بالماء! حدث طوفان عظيم أغرق كل الكافرين، بينما نجت السفينة ومن فيها بأمانٍ وسلام بحفظ الله تعالى. 🌊🚢</p>
+          `,
+        },
+        {
+          id: 3,
+          title: "إبراهيم والنار",
+          icon: "fa-fire",
+          color: "#f59e0b",
+          content: `
+            <p><span class="highlight">سيدنا إبراهيم</span> (خليل الله) كان فتى ذكياً وشجاعاً. كان قومه يعبدون الأصنام (تماثيل من الحجارة لا تسمع ولا تنفع).</p>
+            <p>في يوم العيد، عندما خرج الناس للاحتفال، ذهب إبراهيم وجلب فأساً وحطم كل الأصنام! وترك الفأس على تمثال كبير (كبير الأصنام).</p>
+            <p>غضب الملك (النمرود) وقومه جداً، وقرروا معاقبة إبراهيم بمعاقبة شديدة.. أوقدوا ناراً عظيمة جداً ورموا إبراهيم فيها!</p>
+            <p>لكن حدثت المعجزة! أمر الله النار وقال: <span class="highlight">"يَا نَارُ كُونِي بَرْدًا وَسَلَامًا عَلَىٰ إِبْرَاهِيمَ"</span>. فجلست النار تداعب إبراهيم بلطف ولم تحرقه أبداً! وخرج منها سليماً معافى. 🔥✨</p>
+          `,
+        },
+        {
+          id: 4,
+          title: "عصا موسى",
+          icon: "fa-wand-magic-sparkles",
+          color: "#8b5cf6",
+          content: `
+            <p><span class="highlight">أرسل الله</span> نبيه (موسى) عليه السلام إلى فرعون طاغية مصر، ليدعوه إلى توحيد الله وإطلاق سراح بني إسرائيل.</p>
+            <p>جمع فرعون أمهر السحرة وتحدوا موسى.. ألقى السحرة عصيهم فخُيل للناس أنها ثعابين تتحرك. ثم ألقى موسى (عصاه)، فبإذن الله تحولت إلى <span class="highlight">ثعبان حقيقي ضخم</span> ابتلع كل حبال السحرة!</p>
+            <p>آمن السحرة بالله فوراً. وعندما هرب موسى وقومه من فرعون وجنوده، وصلوا إلى شط البحر (البحر أمامهم وفرعون خلفهم)..</p>
+            <p>أمره الله بضرب البحر بالعصا، فانشق البحر نصفين وصار طريقاً يابساً! عبر موسى وقومه بأمان، ولما دخل فرعون أغرق الله عليه البحر فغرق مع جنوده. 🌊🦯</p>
+          `,
+        },
+      ];
+
+      const grid = document.getElementById("stories-grid");
+      const modal = document.getElementById("reader-modal");
+      const mTitle = document.getElementById("story-title-modal");
+      const mBody = document.getElementById("story-body-modal");
+      const closeBtn = document.getElementById("close-reader");
+
+      stories.forEach((story) => {
+        const card = document.createElement("div");
+        card.className = "story-card fade-in-up";
+        card.innerHTML = `
+          <div class="story-icon" style="color: ${story.color};">
+            <i class="fa-solid ${story.icon}"></i>
+          </div>
+          <h3>${story.title}</h3>
+          <p style="color: var(--text-muted);">اضغط للقراءة</p>
+        `;
+
+        card.addEventListener("click", () => {
+          mTitle.textContent = story.title;
+          mBody.innerHTML = story.content;
+          modal.classList.add("active");
+          document.body.style.overflow = "hidden"; // Prevent background scrolling
+        });
+
+        grid.appendChild(card);
+      });
+
+      closeBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+        document.body.style.overflow = "auto";
+      });
+
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.classList.remove("active");
+          document.body.style.overflow = "auto";
+        }
+      });
+    </script>
+  </body>
+</html>

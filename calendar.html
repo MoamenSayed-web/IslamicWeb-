@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <title>التقويم الإسلامي - سراج</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .calendar-hero {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary),
+          var(--bg-main)
+        );
+        border-bottom: 1px solid var(--border-color);
+      }
+      .calendar-hero h1 {
+        font-family: var(--font-cairo);
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+      }
+      .calendar-hero p {
+        font-family: var(--font-tajawal);
+        font-size: 1.2rem;
+        color: var(--text-muted);
+      }
+
+      .date-cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
+        margin-top: -40px;
+        position: relative;
+        z-index: 10;
+        padding: 0 20px;
+      }
+
+      .date-card {
+        background: var(--bg-color);
+        border-radius: 20px;
+        padding: 40px 30px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border-color);
+        text-align: center;
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        transition: transform 0.3s;
+      }
+
+      .date-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      }
+
+      .date-card.hijri {
+        border-top: 5px solid var(--primary-color);
+      }
+      .date-card.gregorian {
+        border-top: 5px solid var(--accent-gold);
+      }
+
+      .date-card i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+      }
+      .date-card.hijri i {
+        color: var(--primary-color);
+      }
+      .date-card.gregorian i {
+        color: var(--accent-gold);
+      }
+
+      .date-title {
+        font-family: var(--font-cairo);
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: var(--text-muted);
+      }
+
+      .date-value {
+        font-family: var(--font-tajawal);
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: var(--text-main);
+      }
+
+      .events-section {
+        max-width: 800px;
+        margin: 60px auto;
+        background: var(--bg-secondary);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--border-color);
+      }
+
+      .events-section h2 {
+        text-align: center;
+        font-family: var(--font-cairo);
+        color: var(--primary-color);
+        margin-bottom: 30px;
+        font-size: 2rem;
+      }
+
+      .event-item {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        background: var(--bg-color);
+        border-radius: 15px;
+        margin-bottom: 15px;
+        border: 1px solid var(--border-color);
+        align-items: center;
+        transition: all 0.3s;
+      }
+
+      .event-item:hover {
+        border-color: var(--accent-gold);
+        transform: translateX(-5px);
+      }
+
+      .event-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fef08a, #fde047);
+        color: #854d0e;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+      }
+
+      [data-theme="dark"] .event-icon {
+        background: linear-gradient(135deg, #ca8a04, #a16207);
+        color: #fef08a;
+      }
+
+      .event-details h3 {
+        font-family: var(--font-cairo);
+        font-size: 1.3rem;
+        color: var(--text-main);
+        margin-bottom: 5px;
+      }
+
+      .event-details p {
+        font-family: var(--font-tajawal);
+        color: var(--text-muted);
+      }
+
+      .sunnah-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        background: #10b981;
+        color: white;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+            <!-- Header/Navbar -->
+    <header class="main-header">
+      <nav class="navbar">
+        <div class="container nav-content">
+          <a href="index.html" class="logo">
+            <i class="fa-solid fa-moon"></i> سراج
+          </a>
+          <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="quran.html">القرآن</a></li>
+            <li><a href="hadith.html">الحديث</a></li>
+            <li><a href="azkar.html">الأذكار</a></li>
+            <li><a href="prayer-times.html">مواقيت الصلاة</a></li>
+            <li><a href="library.html">المكتبة</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <i class="fa-solid fa-cloud-sun"></i>
+            </button>
+            <div class="menu-toggle">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="sub-navbar">
+        <div class="container sub-nav-content">
+          <ul class="sub-nav-links">
+            <li><a href="tafseer.html">التفسير</a></li>
+            <li><a href="fatwa.html">الفتاوى</a></li>
+            <li><a href="cards.html">البطاقات</a></li>
+            <li><a href="qibla.html">القبلة</a></li>
+            <li><a href="zakat.html">الزكاة</a></li>
+            <li><a href="names.html">أسماء الله</a></li>
+            <li><a href="prayer-tracker.html">متتبع الصلوات</a></li>
+            <li><a href="khatma.html">الختمة</a></li>
+            <li><a href="hajj.html">الحج</a></li>
+            <li><a href="tasbeeh.html">المسبحة</a></li>
+            <li><a href="radio.html">الراديو</a></li>
+            <li><a href="live.html">مباشر</a></li>
+            <li><a href="calendar.html" class="active">التقويم</a></li>
+            <li><a href="kids.html">الأطفال</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="coloring.html">التلوين</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <header class="calendar-hero">
+      <div class="container fade-in-up">
+        <h1>التقويم الإسلامي</h1>
+        <p>تابع التاريخ الهجري والميلادي وأهم المناسبات الدينية</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="date-cards-container fade-in-up delay-1">
+        <div class="date-card hijri">
+          <i class="fa-solid fa-moon"></i>
+          <div class="date-title">التاريخ الهجري</div>
+          <div class="date-value" id="hijri-date">جاري التحميل...</div>
+        </div>
+
+        <div class="date-card gregorian">
+          <i class="fa-solid fa-calendar-day"></i>
+          <div class="date-title">التاريخ الميلادي</div>
+          <div class="date-value" id="gregorian-date">جاري التحميل...</div>
+        </div>
+      </div>
+
+      <div class="events-section fade-in-up delay-2">
+        <h2>مواسم الطاعات والمناسبات</h2>
+
+        <div id="events-list">
+          <!-- Event 1 -->
+          <div class="event-item">
+            <div class="event-icon"><i class="fa-solid fa-star"></i></div>
+            <div class="event-details">
+              <h3>صيام الأيام البيض</h3>
+              <p>
+                يستحب صيام الأيام ١٣ و١٤ و١٥ من كل شهر هجري، وهي تعادل صيام
+                الدهر.
+              </p>
+              <span class="sunnah-badge">سنة مؤكدة</span>
+            </div>
+          </div>
+
+          <!-- Event 2 -->
+          <div class="event-item">
+            <div class="event-icon"><i class="fa-solid fa-mosque"></i></div>
+            <div class="event-details">
+              <h3>صيام الإثنين والخميس</h3>
+              <p>
+                ترفع الأعمال في هذين اليومين، وكان النبي ﷺ يحب أن يرفع عمله وهو
+                صائم.
+              </p>
+              <span class="sunnah-badge">سنة أسبوعية</span>
+            </div>
+          </div>
+
+          <!-- Event 3 -->
+          <div
+            class="event-item"
+            style="border-left: 4px solid var(--primary-color)"
+          >
+            <div
+              class="event-icon"
+              style="background: var(--primary-color); color: white"
+            >
+              <i class="fa-solid fa-kaaba"></i>
+            </div>
+            <div class="event-details">
+              <h3>أهم الشهور والأعياد</h3>
+              <p>
+                رمضان (شهر الصيام والقرآن)، عيد الفطر، وعشر ذي الحجة وعيد
+                الأضحى.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const hijriDateEl = document.getElementById("hijri-date");
+        const gregDateEl = document.getElementById("gregorian-date");
+
+        const optionsHijri = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        const optionsGreg = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+
+        const today = new Date();
+
+        try {
+          const hijriStr = new Intl.DateTimeFormat(
+            "ar-SA-u-ca-islamic",
+            optionsHijri,
+          ).format(today);
+          hijriDateEl.textContent = hijriStr;
+
+          const gregStr = new Intl.DateTimeFormat("ar-EG", optionsGreg).format(
+            today,
+          );
+          gregDateEl.textContent = gregStr;
+        } catch (e) {
+          hijriDateEl.textContent = "تعذر جلب التاريخ";
+          gregDateEl.textContent = today.toLocaleDateString();
+        }
+      });
+    </script>
+  </body>
+</html>
